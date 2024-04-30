@@ -1,1 +1,6 @@
-# Triadic_Rust
+Steps to push something on Git: 
+
+1. git init 
+2. git add "file name"(if any new files) or simply . 
+3. git commit -m "Message"
+4. git push origin -u main
