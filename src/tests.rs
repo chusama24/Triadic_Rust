@@ -45,8 +45,10 @@ println!("Result: {}", c);
 
 #[test]
 fn test3(){
-  let mut data: Box<i32> = Box::new(10);
-  let mut t_data: Box<TI32> = Box::new(TI32::new(10, Triadic::new(T)));
+  let data: Box<i32> = Box::new(10);
+  let t_data: Box<TI32> = Box::new(TI32::new(10, Triadic::new(T)));
+  println!("Normal Smart Pointer: {}", *data);
+  t_data.t_print();
   
 }
 
