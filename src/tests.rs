@@ -1,4 +1,5 @@
 
+use crate::data_structures::t_array::TArray;
 use crate::data_types::t_i32::TI32;
 use crate::data_types::t_i8::TI8;
 use crate::data_types::triadic::Triadic;
@@ -49,6 +50,25 @@ fn test3(){
   let t_data: Box<TI32> = Box::new(TI32::new(10, Triadic::new(T)));
   println!("Normal Smart Pointer: {}", *data);
   t_data.t_print();
+
+}
+
+#[test]
+fn test4(){
+  let mut vec:TArray<TI32> = TArray::default();
+  let mut x = TI32::new(23, Triadic::new(T));
+
+  vec.push(x);
+  vec.t_print();
+
+  x.set_value(24);
+
+  vec.insert_at(x, 0);
+  println!("Testing triadic vectors: "); 
+  vec.t_print();
+
+  let a = vec.pop().expect("Vector is Empty!");
+a.t_print();
 
 }
 

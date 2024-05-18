@@ -1,3 +1,4 @@
+use crate::data_structures::t_array::TArray;
 use crate::data_types::t_f32::TF32;
 use crate::data_types::t_f64::TF64;
 use crate::data_types::triadic::Triadic;
@@ -17,18 +18,18 @@ Welcome to Print Trait!
 Print functions for all Traidic dataTypes need to be defined here.
 */
 pub trait Print{
-    fn t_print(self);
+    fn t_print(&self);
 }
 
 impl Print for Triadic{
-    fn t_print(self) {
-        println!("Value: ");
+    fn t_print(&self) {
+        println!("Triadic Value: ");
         t_enum::t_print(self.get_value());
     }
 }
 
 impl Print for TI8{
-    fn t_print(self) {
+    fn t_print(&self) {
         println!("Value: {} -----------> Degree: ", self.get_value());
         let t = self.get_degree();
         t.t_print();
@@ -36,7 +37,7 @@ impl Print for TI8{
 }
 
 impl Print for TI32{
-    fn t_print(self) {
+    fn t_print(&self) {
         println!("Value: {} -----------> Degree: ", self.get_value());
         let t = self.get_degree();
         t.t_print();
@@ -44,7 +45,7 @@ impl Print for TI32{
 }
 
 impl Print for TI16{
-    fn t_print(self) {
+    fn t_print(&self) {
         println!("Value: {} -----------> Degree: ", self.get_value());
         let t = self.get_degree();
         t.t_print();
@@ -52,14 +53,14 @@ impl Print for TI16{
 }
 
 impl Print for TI64{
-    fn t_print(self) {
+    fn t_print(&self) {
         println!("Value: {} -----------> Degree: ", self.get_value());
         let t = self.get_degree();
         t.t_print();
     }
 }
 impl Print for TI128{
-    fn t_print(self) {
+    fn t_print(&self) {
         println!("Value: {} -----------> Degree: ", self.get_value());
         let t = self.get_degree();
         t.t_print();
@@ -68,7 +69,7 @@ impl Print for TI128{
 
 
 impl Print for TU8{
-    fn t_print(self) {
+    fn t_print(&self) {
         println!("Value: {} -----------> Degree: ", self.get_value());
         let t = self.get_degree();
         t.t_print();
@@ -76,7 +77,7 @@ impl Print for TU8{
 }
 
 impl Print for TU32{
-    fn t_print(self) {
+    fn t_print(&self) {
         println!("Value: {} -----------> Degree: ", self.get_value());
         let t = self.get_degree();
         t.t_print();
@@ -84,7 +85,7 @@ impl Print for TU32{
 }
 
 impl Print for TU16{
-    fn t_print(self) {
+    fn t_print(&self) {
         println!("Value: {} -----------> Degree: ", self.get_value());
         let t = self.get_degree();
         t.t_print();
@@ -92,14 +93,14 @@ impl Print for TU16{
 }
 
 impl Print for TU64{
-    fn t_print(self) {
+    fn t_print(&self) {
         println!("Value: {} -----------> Degree: ", self.get_value());
         let t = self.get_degree();
         t.t_print();
     }
 }
 impl Print for TU128{
-    fn t_print(self) {
+    fn t_print(&self) {
         println!("Value: {} -----------> Degree: ", self.get_value());
         let t = self.get_degree();
         t.t_print();
@@ -107,7 +108,7 @@ impl Print for TU128{
 }
 
 impl Print for TF32 {
-    fn t_print(self) {
+    fn t_print(&self) {
         println!("Value: {} -----------> Degree: ", self.get_value());
         let t = self.get_degree();
         t.t_print();
@@ -115,8 +116,18 @@ impl Print for TF32 {
 }
 
 impl Print for TF64 {
-    fn t_print(self) {
+    fn t_print(&self) {
         println!("Value: {} -----------> Degree: ", self.get_value());
+        let t = self.get_degree();
+        t.t_print();
+    }
+}
+
+impl<T: Ttypes + Print> Print for TArray<T>{
+    fn t_print(&self) {
+      for x in self.get_vector().iter(){
+        x.t_print()
+      }
         let t = self.get_degree();
         t.t_print();
     }
