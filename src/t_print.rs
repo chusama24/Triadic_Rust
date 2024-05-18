@@ -1,3 +1,5 @@
+use crate::data_types::t_f32::TF32;
+use crate::data_types::t_f64::TF64;
 use crate::data_types::triadic::Triadic;
 use crate::data_types::{t_i32::TI32, t_i8::TI8, t_i16::TI16, t_i128::TI128, t_i64::TI64, triadic_type::Ttypes};
 use crate::data_types::{t_u32::TU32, t_u8::TU8, t_u16::TU16, t_u128::TU128, t_u64::TU64};
@@ -105,7 +107,7 @@ impl Print for TU128{
 }
 
 impl Print for TF32 {
-    fn t_print(&self) {
+    fn t_print(self) {
         println!("Value: {} -----------> Degree: ", self.get_value());
         let t = self.get_degree();
         t.t_print();
@@ -113,7 +115,7 @@ impl Print for TF32 {
 }
 
 impl Print for TF64 {
-    fn t_print(&self) {
+    fn t_print(self) {
         println!("Value: {} -----------> Degree: ", self.get_value());
         let t = self.get_degree();
         t.t_print();

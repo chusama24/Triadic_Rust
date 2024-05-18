@@ -33,6 +33,8 @@ pub mod data_types{
     pub mod t_u32;
     pub mod t_u64;
     pub mod t_u128;
+    pub mod t_f32;
+    pub mod t_f64;
  pub mod triadic;
 }
 pub mod operators{
@@ -47,6 +49,8 @@ pub mod operators{
     pub mod op_u32;
     pub mod op_u64;
     pub mod op_u128;
+    pub mod op_f32;
+    pub mod op_f64;
 }
 #[cfg(test)]
 pub mod tests;

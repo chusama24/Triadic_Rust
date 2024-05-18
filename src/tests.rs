@@ -49,7 +49,7 @@ fn test3(){
   let t_data: Box<TI32> = Box::new(TI32::new(10, Triadic::new(T)));
   println!("Normal Smart Pointer: {}", *data);
   t_data.t_print();
-  
+
 }
 
 

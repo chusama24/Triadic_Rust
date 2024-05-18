@@ -274,7 +274,7 @@ impl TriadicOp for TF64 {
 
     fn tlt_1(self, v2: Self) -> Self {
         
-        let mut obj = Self::new(0,Triadic::default());
+        let mut obj = Self::new(0.0,Triadic::default());
        let temp = self.tand_1(v2);
 
         match temp.get_value(){
@@ -301,7 +301,7 @@ impl TriadicOp for TF64 {
 // Second Triadic Less than (<) operator using Triadic AND2 (omega). 
 
     fn tlt_2(self, v2: Self) -> Self {
-        let mut obj = Self::new(0,Triadic::default());
+        let mut obj = Self::new(0.0,Triadic::default());
         let temp = self.tand_2(v2);
 
         match temp.get_value(){
@@ -328,7 +328,7 @@ impl TriadicOp for TF64 {
 // Third Triadic Less than (<) operator using Triadic AND1 (Psi). 
 
     fn tlt_3(self, v2: Self) -> Self {
-        let mut obj = Self::new(0,Triadic::default());
+        let mut obj = Self::new(0.0,Triadic::default());
         let temp = self.tand_3(v2);
 
         match temp.get_value(){
@@ -354,7 +354,7 @@ impl TriadicOp for TF64 {
 // Singular Triadic Less than (<) operator using Triadic AND1, AND2, and AND3. 
 
     fn tlt(self, v2: Self) -> Self {
-        let mut obj = Self::new(0,Triadic::default());
+        let mut obj = Self::new(0.0,Triadic::default());
         let temp = self.tand(v2);
 
         match temp.get_value(){
@@ -380,7 +380,7 @@ impl TriadicOp for TF64 {
 // First Triadic Equavilence (==) operator using Triadic AND1 (Z). 
 
     fn teq_1(self, v2: Self) -> Self {
-        let mut obj = Self::new(0,Triadic::default());
+        let mut obj = Self::new(0.0,Triadic::default());
        let temp = self.tand_1(v2);
 
         match temp.get_value(){
@@ -406,7 +406,7 @@ impl TriadicOp for TF64 {
 // Second Triadic Equavilence (==) operator using Triadic AND2 (Omega). 
 
     fn teq_2(self, v2: Self) -> Self {
-        let mut obj = Self::new(0,Triadic::default());
+        let mut obj = Self::new(0.0,Triadic::default());
         let temp = self.tand_2(v2);
 
         match temp.get_value(){
@@ -432,7 +432,7 @@ impl TriadicOp for TF64 {
 // Third Triadic Equavilence (==) operator using Triadic AND3 (Psi). 
 
     fn teq_3(self, v2: Self) -> Self {
-        let mut obj = Self::new(0,Triadic::default());        
+        let mut obj = Self::new(0.0,Triadic::default());        
         let temp = self.tand_3(v2);
 
         match temp.get_value(){
@@ -458,7 +458,7 @@ impl TriadicOp for TF64 {
 // Singular Triadic Equavilence (==) operator using Triadic AND1, AND2, and AND3. 
 
     fn teq(self, v2: Self) -> Self {
-        let mut obj = Self::new(0,Triadic::default());        
+        let mut obj = Self::new(0.0,Triadic::default());        
         let temp = self.tand(v2);
 
         match temp.get_value(){
@@ -485,7 +485,7 @@ impl TriadicOp for TF64 {
 // First Triadic Greater than (>_1) operator using Triadic AND1 (Z). 
 
     fn tgt_1(self, v2: Self) -> Self {
-        let mut obj = Self::new(0,Triadic::default());
+        let mut obj = Self::new(0.0,Triadic::default());
        let temp = self.tand_1(v2);
 
         match temp.get_value(){
@@ -511,7 +511,7 @@ impl TriadicOp for TF64 {
 // Second Triadic Equavilence (>_2) operator using Triadic AND2 (Omega). 
 
     fn tgt_2(self, v2: Self) -> Self {
-        let mut obj = Self::new(0,Triadic::default());
+        let mut obj = Self::new(0.0,Triadic::default());
         let temp = self.tand_2(v2);
 
         match temp.get_value(){
@@ -537,7 +537,7 @@ impl TriadicOp for TF64 {
 // Third Triadic Equavilence (>_3) operator using Triadic AND3 (Psi). 
 
     fn tgt_3(self, v2: Self) -> Self {
-        let mut obj = Self::new(0,Triadic::default());        
+        let mut obj = Self::new(0.0,Triadic::default());        
         let temp = self.tand_3(v2);
 
         match temp.get_value(){
@@ -563,7 +563,7 @@ impl TriadicOp for TF64 {
 // Singular Triadic Equavilence (>) operator using Triadic AND1, AND2, and AND3. 
 
 fn tgt(self, v2: Self) -> Self {
-    let mut obj = Self::new(0,Triadic::default());        
+    let mut obj = Self::new(0.0,Triadic::default());        
         let temp = self.tand(v2);
 
         match temp.get_value(){
@@ -590,7 +590,7 @@ fn tgt(self, v2: Self) -> Self {
     
     // First Triadic Greater than equal (>=_1) operator using Triadic AND1 (Z). 
     fn tgeq_1(self, v2: Self) -> Self {
-        let mut obj = Self::new(0,Triadic::default());
+        let mut obj = Self::new(0.0,Triadic::default());
         let temp = self.tand_1(v2);
 
         match temp.get_value(){
@@ -616,7 +616,7 @@ fn tgt(self, v2: Self) -> Self {
 // Second Triadic Greater than equal (>=_2) operator using Triadic AND2 (Omega). 
 
     fn tgeq_2(self, v2: Self) -> Self {
-        let mut obj = Self::new(0,Triadic::default());
+        let mut obj = Self::new(0.0,Triadic::default());
         let temp = self.tand_2(v2);
 
         match temp.get_value(){
@@ -642,7 +642,7 @@ fn tgt(self, v2: Self) -> Self {
 // Third Triadic Greater than equal (>=_3) operator using Triadic AND3 (Psi). 
 
     fn tgeq_3(self, v2: Self) -> Self {
-        let mut obj = Self::new(0,Triadic::default());        
+        let mut obj = Self::new(0.0,Triadic::default());        
         let temp = self.tand_3(v2);
 
         match temp.get_value(){
@@ -668,7 +668,7 @@ fn tgt(self, v2: Self) -> Self {
 // Singular Triadic Greater than equal (>=) operator using Triadic AND1, AND2, and AND3. 
 
     fn tgeq(self, v2: Self) -> Self {
-        let mut obj = Self::new(0,Triadic::default());        
+        let mut obj = Self::new(0.0,Triadic::default());        
         let temp = self.tand(v2);
 
         match temp.get_value(){
@@ -694,7 +694,7 @@ fn tgt(self, v2: Self) -> Self {
     }
 
     fn tleq_1(self, v2: Self) -> Self {
-        let mut obj = Self::new(0,Triadic::default());
+        let mut obj = Self::new(0.0,Triadic::default());
        let temp = self.tand_1(v2);
 
         match temp.get_value(){
@@ -719,7 +719,7 @@ fn tgt(self, v2: Self) -> Self {
     }
 
     fn tleq_2(self, v2: Self) -> Self {
-        let mut obj = Self::new(0,Triadic::default());
+        let mut obj = Self::new(0.0,Triadic::default());
         let temp = self.tand_2(v2);
 
         match temp.get_value(){
@@ -744,7 +744,7 @@ fn tgt(self, v2: Self) -> Self {
     }
 
     fn tleq_3(self, v2: Self) -> Self {
-        let mut obj = Self::new(0,Triadic::default());        
+        let mut obj = Self::new(0.0,Triadic::default());        
         let temp = self.tand_3(v2);
 
         match temp.get_value(){
@@ -769,7 +769,7 @@ fn tgt(self, v2: Self) -> Self {
     }
 
     fn tleq(self, v2: Self) -> Self {
-        let mut obj = Self::new(0,Triadic::default());        
+        let mut obj = Self::new(0.0,Triadic::default());        
         let temp = self.tand(v2);
 
         match temp.get_value(){
@@ -795,7 +795,7 @@ fn tgt(self, v2: Self) -> Self {
     }
 
     fn tneq_1(self, v2: Self) -> Self {
-        let mut obj = Self::new(0,Triadic::default());
+        let mut obj = Self::new(0.0,Triadic::default());
        let temp = self.tand_1(v2);
 
         match temp.get_value(){
@@ -820,7 +820,7 @@ fn tgt(self, v2: Self) -> Self {
     }
 
     fn tneq_2(self, v2: Self) -> Self {
-        let mut obj = Self::new(0,Triadic::default());
+        let mut obj = Self::new(0.0,Triadic::default());
         let temp = self.tand_2(v2);
 
         match temp.get_value(){
@@ -845,7 +845,7 @@ fn tgt(self, v2: Self) -> Self {
     }
 
     fn tneq_3(self, v2: Self) -> Self {
-        let mut obj = Self::new(0,Triadic::default());        
+        let mut obj = Self::new(0.0,Triadic::default());        
         let temp = self.tand_3(v2);
 
         match temp.get_value(){
@@ -870,7 +870,7 @@ fn tgt(self, v2: Self) -> Self {
     }
 
     fn tneq(self, v2: Self) -> Self {
-        let mut obj = Self::new(0,Triadic::default());        
+        let mut obj = Self::new(0.0,Triadic::default());        
         let temp = self.tand(v2);
 
         match temp.get_value(){
@@ -896,7 +896,7 @@ fn tgt(self, v2: Self) -> Self {
     }
 
     fn tplus_1(self, v2: Self) -> Self {
-        let mut obj = Self::new(0,Triadic::default());
+        let mut obj = Self::new(0.0,Triadic::default());
        let temp = self.tand_1(v2);
 
         match temp.get_value(){
@@ -915,7 +915,7 @@ fn tgt(self, v2: Self) -> Self {
     }
 
     fn tplus_2(self, v2: Self) -> Self {
-        let mut obj = Self::new(0,Triadic::default());
+        let mut obj = Self::new(0.0,Triadic::default());
         let temp = self.tand_2(v2);
 
         match temp.get_value(){
@@ -934,7 +934,7 @@ fn tgt(self, v2: Self) -> Self {
     }
 
     fn tplus_3(self, v2: Self) -> Self {
-        let mut obj = Self::new(0,Triadic::default());        
+        let mut obj = Self::new(0.0,Triadic::default());        
         let temp = self.tand_3(v2);
 
         match temp.get_value(){
@@ -953,7 +953,7 @@ fn tgt(self, v2: Self) -> Self {
     }
 
     fn tplus(self, v2: Self) -> Self {
-        let mut obj = Self::new(0,Triadic::default());        
+        let mut obj = Self::new(0.0,Triadic::default());        
         let temp = self.tand(v2);
 
         match temp.get_value(){
@@ -972,7 +972,7 @@ fn tgt(self, v2: Self) -> Self {
     }
 
     fn tsub_1(self, v2: Self) -> Self {
-        let mut obj = Self::new(0,Triadic::default());
+        let mut obj = Self::new(0.0,Triadic::default());
        let temp = self.tand_1(v2);
 
         match temp.get_value(){
@@ -991,7 +991,7 @@ fn tgt(self, v2: Self) -> Self {
     }
 
     fn tsub_2(self, v2: Self) -> Self {
-        let mut obj = Self::new(0,Triadic::default());
+        let mut obj = Self::new(0.0,Triadic::default());
         let temp = self.tand_2(v2);
 
         match temp.get_value(){
@@ -1010,7 +1010,7 @@ fn tgt(self, v2: Self) -> Self {
     }
 
     fn tsub_3(self, v2: Self) -> Self {
-        let mut obj = Self::new(0,Triadic::default());        
+        let mut obj = Self::new(0.0,Triadic::default());        
         let temp = self.tand_3(v2);
 
         match temp.get_value(){
@@ -1029,7 +1029,7 @@ fn tgt(self, v2: Self) -> Self {
     }
 
     fn tsub(self, v2: Self) -> Self {
-        let mut obj = Self::new(0,Triadic::default());        
+        let mut obj = Self::new(0.0,Triadic::default());        
         let temp = self.tand(v2);
 
         match temp.get_value(){
@@ -1048,7 +1048,7 @@ fn tgt(self, v2: Self) -> Self {
     }
 
     fn tmul_1(self, v2: Self) -> Self {
-        let mut obj = Self::new(0,Triadic::default());
+        let mut obj = Self::new(0.0,Triadic::default());
        let temp = self.tand_1(v2);
 
         match temp.get_value(){
@@ -1067,7 +1067,7 @@ fn tgt(self, v2: Self) -> Self {
     }
 
     fn tmul_2(self, v2: Self) -> Self {
-        let mut obj = Self::new(0,Triadic::default());
+        let mut obj = Self::new(0.0,Triadic::default());
         let temp = self.tand_2(v2);
 
         match temp.get_value(){
@@ -1086,7 +1086,7 @@ fn tgt(self, v2: Self) -> Self {
     }
 
     fn tmul_3(self, v2: Self) -> Self {
-        let mut obj = Self::new(0,Triadic::default());        
+        let mut obj = Self::new(0.0,Triadic::default());        
         let temp = self.tand_3(v2);
 
         match temp.get_value(){
@@ -1105,7 +1105,7 @@ fn tgt(self, v2: Self) -> Self {
     }
 
     fn tmul(self, v2: Self) -> Self {
-        let mut obj = Self::new(0,Triadic::default());        
+        let mut obj = Self::new(0.0,Triadic::default());        
         let temp = self.tand(v2);
 
         match temp.get_value(){
@@ -1124,7 +1124,7 @@ fn tgt(self, v2: Self) -> Self {
     }
 
     fn tdiv_1(self, v2: Self) -> Self {
-        let mut obj = Self::new(0,Triadic::default());
+        let mut obj = Self::new(0.0,Triadic::default());
        let temp = self.tand_1(v2);
 
         match temp.get_value(){
@@ -1143,7 +1143,7 @@ fn tgt(self, v2: Self) -> Self {
     }
 
     fn tdiv_2(self, v2: Self) -> Self {
-        let mut obj = Self::new(0,Triadic::default());
+        let mut obj = Self::new(0.0,Triadic::default());
         let temp = self.tand_2(v2);
 
         match temp.get_value(){
@@ -1162,7 +1162,7 @@ fn tgt(self, v2: Self) -> Self {
     }
 
     fn tdiv_3(self, v2: Self) -> Self {
-        let mut obj = Self::new(0,Triadic::default());        
+        let mut obj = Self::new(0.0,Triadic::default());        
         let temp = self.tand_3(v2);
 
         match temp.get_value(){
@@ -1181,7 +1181,7 @@ fn tgt(self, v2: Self) -> Self {
     }
 
     fn tdiv(self, v2: Self) -> Self {
-        let mut obj = Self::new(0,Triadic::default());        
+        let mut obj = Self::new(0.0,Triadic::default());        
         let temp = self.tand(v2);
 
         match temp.get_value(){
@@ -1200,7 +1200,7 @@ fn tgt(self, v2: Self) -> Self {
     }
 
     fn tmod_1(self, v2: Self) -> Self {
-        let mut obj = Self::new(0,Triadic::default());
+        let mut obj = Self::new(0.0,Triadic::default());
        let temp = self.tand_1(v2);
 
         match temp.get_value(){
@@ -1219,7 +1219,7 @@ fn tgt(self, v2: Self) -> Self {
     }
 
     fn tmod_2(self, v2: Self) -> Self {
-        let mut obj = Self::new(0,Triadic::default());
+        let mut obj = Self::new(0.0,Triadic::default());
         let temp = self.tand_2(v2);
 
         match temp.get_value(){
@@ -1238,7 +1238,7 @@ fn tgt(self, v2: Self) -> Self {
     }
 
     fn tmod_3(self, v2: Self) -> Self {
-        let mut obj = Self::new(0,Triadic::default());        
+        let mut obj = Self::new(0.0,Triadic::default());        
         let temp = self.tand_3(v2);
 
         match temp.get_value(){
@@ -1257,7 +1257,7 @@ fn tgt(self, v2: Self) -> Self {
     }
 
     fn tmod(self, v2: Self) -> Self {
-        let mut obj = Self::new(0,Triadic::default());        
+        let mut obj = Self::new(0.0,Triadic::default());        
         let temp = self.tand(v2);
 
         match temp.get_value(){
