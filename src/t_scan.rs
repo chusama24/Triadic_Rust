@@ -249,3 +249,37 @@ and then parse into the required dataType in this case, i32 by using "let num: i
         
     }
 }
+
+impl Scan for TF32 {
+    fn t_scan(&mut self) {
+        let mut d = Triadic::default();
+        println!("Value: ");
+
+        let mut val = String::new();
+        io::stdin().read_line(&mut val)
+            .expect("Failed to read line");
+
+        let num: f32 = val.trim().parse()
+            .expect("Please enter a valid float");
+        self.set_value(num);
+
+        d.t_scan();
+    }
+}
+
+impl Scan for TF64 {
+    fn t_scan(&mut self) {
+        let mut d = Triadic::default();
+        println!("Value: ");
+
+        let mut val = String::new();
+        io::stdin().read_line(&mut val)
+            .expect("Failed to read line");
+
+        let num: f64 = val.trim().parse()
+            .expect("Please enter a valid float");
+        self.set_value(num);
+
+        d.t_scan();
+    }
+}

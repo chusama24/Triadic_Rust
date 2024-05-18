@@ -103,3 +103,19 @@ impl Print for TU128{
         t.t_print();
     }
 }
+
+impl Print for TF32 {
+    fn t_print(&self) {
+        println!("Value: {} -----------> Degree: ", self.get_value());
+        let t = self.get_degree();
+        t.t_print();
+    }
+}
+
+impl Print for TF64 {
+    fn t_print(&self) {
+        println!("Value: {} -----------> Degree: ", self.get_value());
+        let t = self.get_degree();
+        t.t_print();
+    }
+}

@@ -84,5 +84,22 @@ pub fn convertto_u128<T: Ttypes>(v: T) -> TU128 where u128: From<<T as Ttypes>::
     obj
 }
 
+pub fn convertto_f32<T: Ttypes>(v: T) -> TF32 
+where f32: From<<T as Ttypes>::ValType>
+{
+    let temp = v.get_value();
+    let new_val: f32 = temp.into();
+    let obj = TF32::new(new_val, v.get_degree());
+    obj
+}
+
+pub fn convertto_f64<T: Ttypes>(v: T) -> TF64 
+where f64: From<<T as Ttypes>::ValType>
+{
+    let temp = v.get_value();
+    let new_val: f64 = temp.into();
+    let obj = TF64::new(new_val, v.get_degree());
+    obj
+}
 
 
