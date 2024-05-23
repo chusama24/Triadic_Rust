@@ -22,7 +22,7 @@ This trait needs to defined in every triadic dataType(Check out already implemen
 ValType refers to the dataType that we are converting from classical to triadic.
 */
 
-pub trait Ttypes: Copy {
+pub trait Ttypes {
     type ValType;
      fn get_value(&self) -> Self::ValType;
      fn get_degree(&self) -> Triadic;

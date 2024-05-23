@@ -1,5 +1,7 @@
+use crate::data_types::t_char::TChar;
 use crate::data_types::t_f32::TF32;
 use crate::data_types::t_f64::TF64;
+use crate::data_types::t_string::TString;
 use crate::data_types::{t_i32::TI32, t_i8::TI8, t_i16::TI16, t_i128::TI128, t_i64::TI64};
 use crate::data_types::{t_u32::TU32, t_u8::TU8, t_u16::TU16, t_u128::TU128, t_u64::TU64};
 use crate::data_types::triadic::Triadic;
@@ -281,6 +283,38 @@ impl Scan for TF64 {
         let num: f64 = val.trim().parse()
             .expect("Please enter a valid float");
         self.set_value(num);
+
+        d.t_scan();
+    }
+}
+
+impl Scan for TChar {
+    fn t_scan(&mut self) {
+        let mut d = Triadic::default();
+        println!("Value: ");
+
+        let mut val = String::new();
+        io::stdin().read_line(&mut val)
+            .expect("Failed to read line");
+
+        let c: char = val.trim().parse()
+            .expect("Please enter a valid character");
+        self.set_value(c);
+
+        d.t_scan();
+    }
+}
+
+impl Scan for TString {
+    fn t_scan(&mut self) {
+        let mut d = Triadic::default();
+        println!("Value: ");
+
+        let mut val = String::new();
+        io::stdin().read_line(&mut val)
+            .expect("Failed to read line");
+
+        self.set_value(val);
 
         d.t_scan();
     }

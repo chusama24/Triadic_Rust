@@ -1,10 +1,9 @@
 
-use crate::data_types::t_i16::TI16;
+use crate::data_types::t_char::TChar;
 use crate::data_types::triadic::Triadic;
 use crate::data_types::triadic_type::Ttypes;
 use crate::t_enum::Degree;
-
-use super::triadic_op::{TriadicArithmeticOp, TriadicLogicalOp, TriadicRelationalOp};
+use super::triadic_op::{TriadicLogicalOp, TriadicRelationalOp};
 
 /*
 use crate:: and use super:: are used to import different modules(files) in this file. 
@@ -20,8 +19,17 @@ dataType.
 */
 
 
-impl TriadicLogicalOp for TI16{
-    // First Triadic AND operator (Z) declared as tand_1. Its rule is F > L > T
+impl TriadicLogicalOp for TChar {
+
+    /*  
+        Logically we can compare any 2 dataTypes, hence all logical operators are generic functions, and
+        the second value(v2) is of generic type B(means it can be any type and B is just a random name)
+        and B type is restricted to Ttypes trait which means v2 needs to have Ttypes implemented
+        (Check triadic_type.rs). We have done so to restrict our v2 to Triadic dataTypes otherwise we will
+        not be able to use get_degree() or get_value().
+    */
+
+// First Triadic AND operator (Z) declared as tand_1. Its rule is F > L > T
 
     fn tand_1<B: Ttypes + Copy>(self, v2: B) -> Triadic {
         let temp = self.get_degree();
@@ -200,7 +208,7 @@ impl TriadicLogicalOp for TI16{
 // Singular Triadic OR operator (combining all three ORs) declared as tand. 
 
 // It simply calls tor_1, tor_2, and tor_3 triadic operators defined above.  
-    fn tor<B: Ttypes + Copy + Copy>(self, v2: B) -> Triadic {
+    fn tor<B: Ttypes + Copy>(self, v2: B) -> Triadic {
          // OR1
          let mut t1 = Self::default();
          t1.set_degree(self.tor_1(v2));
@@ -282,19 +290,9 @@ impl TriadicLogicalOp for TI16{
             }
         }
     }
-
 }
 
-impl TriadicRelationalOp for TI16 {
-
-    /*  
-        Logically we can compare any 2 dataTypes, hence all logical operators are generic functions, and
-        the second value(v2) is of generic type B(means it can be any type and B is just a random name)
-        and B type is restricted to Ttypes trait which means v2 needs to have Ttypes implemented
-        (Check triadic_type.rs). We have done so to restrict our v2 to Triadic dataTypes otherwise we will
-        not be able to use get_degree() or get_value().
-    */
-
+impl TriadicRelationalOp for TChar{
 // First Triadic Less than (<) operator using Triadic AND1 (Z). 
 
     fn tlt_1(self, v2: Self) -> Self {
@@ -919,10 +917,7 @@ fn tgt(self, v2: Self) -> Self {
         }
         return obj;
     }
-
-}
-
-impl TriadicArithmeticOp for TI16 {
+/*
     fn tplus_1(self, v2: Self) -> Self {
         let mut obj = Self::default();
        let temp = self.tand_1(v2);
@@ -1302,4 +1297,5 @@ impl TriadicArithmeticOp for TI16 {
         }
         return obj;
     }
+*/ 
 }

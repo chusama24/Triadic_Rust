@@ -2,10 +2,11 @@
 use crate::data_structures::t_array::TArray;
 use crate::data_types::t_i32::TI32;
 use crate::data_types::t_i8::TI8;
+use crate::data_types::t_string::TString;
 use crate::data_types::triadic::Triadic;
 use crate::t_enum::Degree::*;
 use crate::t_print::Print;
-use crate::operators::triadic_op::TriadicOp;
+use crate::operators::triadic_op::*;
 use crate::type_cast::convertto_i32;
 
 
@@ -33,7 +34,6 @@ let a = TI8::new(2, t);
 let b = TI32::new(4, t);
 let c = b.tplus_1(convertto_i32(a));
 c.t_print();
-
 } 
 
 #[test]
@@ -70,6 +70,12 @@ fn test4(){
   let a = vec.pop().expect("Vector is Empty!");
 a.t_print();
 
+}
+
+#[test]
+fn test5(){
+  let s = TString::new("hello".to_string(), Triadic::new(T));
+  s.t_print();
 }
 
 

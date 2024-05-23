@@ -35,6 +35,9 @@ pub mod data_types{
     pub mod t_u128;
     pub mod t_f32;
     pub mod t_f64;
+    pub mod t_char;
+    pub mod t_bool;
+    pub mod t_string;
  pub mod triadic;
 }
 pub mod operators{
@@ -51,6 +54,8 @@ pub mod operators{
     pub mod op_u128;
     pub mod op_f32;
     pub mod op_f64;
+    pub mod op_tchar;
+    pub mod op_string;
 }
 pub mod data_structures{
     pub mod t_array;

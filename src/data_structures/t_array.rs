@@ -2,12 +2,12 @@ use crate::data_types::{triadic::Triadic, triadic_type::Ttypes};
 
 
 #[derive(Clone)]
-pub struct TArray<T: Ttypes>{
+pub struct TArray<T: Ttypes + Clone>{
     t_vector: Vec<T>,
     degree: Triadic
 }
 
-impl<T: Ttypes> TArray<T>{
+impl<T: Ttypes + Clone> TArray<T>{
 
    pub fn new(t_vec: Vec<T>, deg: Triadic) -> TArray<T>{
         TArray{t_vector: t_vec, degree: deg}
@@ -43,7 +43,7 @@ impl<T: Ttypes> TArray<T>{
 
 }
 
-impl<T: Ttypes> Default for TArray<T>{
+impl<T: Ttypes + Clone> Default for TArray<T>{
     fn default() -> Self {
         Self{t_vector: Vec::new(), degree: Triadic::default()}
     }

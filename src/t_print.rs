@@ -1,6 +1,8 @@
 use crate::data_structures::t_array::TArray;
+use crate::data_types::t_char::TChar;
 use crate::data_types::t_f32::TF32;
 use crate::data_types::t_f64::TF64;
+use crate::data_types::t_string::TString;
 use crate::data_types::triadic::Triadic;
 use crate::data_types::{t_i32::TI32, t_i8::TI8, t_i16::TI16, t_i128::TI128, t_i64::TI64, triadic_type::Ttypes};
 use crate::data_types::{t_u32::TU32, t_u8::TU8, t_u16::TU16, t_u128::TU128, t_u64::TU64};
@@ -123,7 +125,24 @@ impl Print for TF64 {
     }
 }
 
-impl<T: Ttypes + Print> Print for TArray<T>{
+impl Print for TChar{
+    fn t_print(&self) {
+        println!("Value: {} -----------> Degree: ", self.get_value());
+        let t = self.get_degree();
+        t.t_print();
+    }
+}
+
+impl Print for TString{
+    fn t_print(&self) {
+        println!("Value: {} -----------> Degree: ", self.get_value());
+        let t = self.get_degree();
+        t.t_print();
+    }
+}
+
+
+impl<T: Ttypes + Print + Clone> Print for TArray<T>{
     fn t_print(&self) {
       for x in self.get_vector().iter(){
         x.t_print()

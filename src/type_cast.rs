@@ -1,4 +1,4 @@
-use crate::data_types::{t_f32::TF32, t_f64::TF64, t_i128::TI128, t_i16::TI16, t_i32::TI32, t_i64::TI64, t_i8::TI8, t_u128::TU128, t_u16::TU16, t_u32::TU32, t_u64::TU64, t_u8::TU8, triadic_type::Ttypes};
+use crate::data_types::{t_f32::TF32, t_f64::TF64, t_i128::TI128, t_i16::TI16, t_i32::TI32, t_i64::TI64, t_i8::TI8, t_string::TString, t_u128::TU128, t_u16::TU16, t_u32::TU32, t_u64::TU64, t_u8::TU8, triadic_type::Ttypes};
 
 /*
 Whenever you create a new dataType, make sure to add its type casting function here. These functions are
@@ -99,6 +99,15 @@ where f64: From<<T as Ttypes>::ValType>
     let temp = v.get_value();
     let new_val: f64 = temp.into();
     let obj = TF64::new(new_val, v.get_degree());
+    obj
+}
+
+pub fn convertto_string<T: Ttypes>(v: T) -> TString
+where String: From<<T as Ttypes>::ValType>
+{
+    let temp = v.get_value();
+    let new_val: String = temp.into();
+    let obj = TString::new(new_val, v.get_degree());
     obj
 }
 
