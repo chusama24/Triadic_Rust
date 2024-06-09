@@ -49,4 +49,16 @@ impl<T: Ttypes + Clone> Default for TArray<T>{
     }
 }
 
+impl<T: Ttypes + Clone> Ttypes for TArray<T>{
+    type ValType = Vec<T>;
+
+    fn get_value(&self) -> Self::ValType {
+        self.get_vector()
+    }
+
+    fn get_degree(&self) -> Triadic {
+        self.get_degree()
+    }
+}
+
 

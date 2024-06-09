@@ -1,13 +1,16 @@
 
 use crate::data_structures::t_array::TArray;
+use crate::data_types::t_f32::TF32;
+use crate::data_types::t_f64::TF64;
 use crate::data_types::t_i32::TI32;
 use crate::data_types::t_i8::TI8;
 use crate::data_types::t_string::TString;
+use crate::data_types::t_u128::TU128;
 use crate::data_types::triadic::Triadic;
 use crate::t_enum::Degree::*;
 use crate::t_print::Print;
 use crate::operators::triadic_op::*;
-use crate::type_cast::convertto_i32;
+use crate::type_cast::{convertto_f32, convertto_f64, convertto_i32};
 
 
 /*
@@ -42,6 +45,7 @@ let a = 45;
 let b = 2;
 let c = a + b;
 println!("Result: {}", c);
+
 }
 
 #[test]
