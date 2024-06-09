@@ -7,7 +7,7 @@
         L = 76
     }
 
-    trait ConvertToDegree {
+   pub trait ConvertToDegree {
         fn enum_convert(&self) -> Degree;
     }
     
