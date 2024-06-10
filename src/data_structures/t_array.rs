@@ -17,6 +17,10 @@ impl<T: Ttypes + Clone> TArray<T>{
         self.degree = d;
     }
 
+    pub fn set_vector(&mut self, v: Vec<T>){
+        self.t_vector = v;
+    }
+
     pub fn get_degree(&self)-> Triadic{
         self.degree
     }
