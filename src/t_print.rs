@@ -144,7 +144,7 @@ impl Print for TString{
 
 impl<T: Ttypes + Print + Clone> Print for TArray<T>{
     fn t_print(&self) {
-      for x in self.get_vector().iter(){
+      for x in self.get_value().iter(){
         x.t_print()
       }
         let t = self.get_degree();

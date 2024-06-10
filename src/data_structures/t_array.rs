@@ -25,8 +25,8 @@ impl<T: Ttypes + Clone> TArray<T>{
         self.degree
     }
 
-    pub fn get_vector(&self) -> &Vec<T> {
-        &self.t_vector
+    pub fn get_vector(&mut self) -> &Vec<T> {
+        &mut self.t_vector
     }
 
     pub fn push(&mut self, val: T){
@@ -57,7 +57,7 @@ impl<T: Ttypes + Clone> Ttypes for TArray<T>{
     type ValType = Vec<T>;
 
     fn get_value(&self) -> Self::ValType {
-        self.get_vector().clone()
+        self.t_vector.clone()
     }
 
     fn get_degree(&self) -> Triadic {
