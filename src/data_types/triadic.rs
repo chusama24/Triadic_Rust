@@ -20,7 +20,7 @@ super is used if the targeted module(file) is in the same parent folder.
 */
 
 #[derive(Clone, Copy)]
-#[derive(PartialEq)]
+#[derive(PartialEq, Eq, Hash)]
 pub struct Triadic {
    val: Degree
 }

@@ -2,7 +2,7 @@
 use crate::data_types::triadic_type::Ttypes;
 use super::triadic::Triadic;
 
-#[derive(Clone)]
+#[derive(Clone, PartialEq, Eq, Hash)]
 pub struct TString {
     value: String,
     deg: Triadic,

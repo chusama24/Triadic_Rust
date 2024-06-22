@@ -1,6 +1,6 @@
     use std::io;
 
-    #[derive(Clone, Copy, PartialEq)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash)]
     pub enum Degree{
         T = 84,
         F = 70, 
