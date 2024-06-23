@@ -1,0 +1,10 @@
+[package]
+name = "decision_tree"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+triadic_rust = {git = "https://github.com/chusama24/Triadic_Rust", branch = "main"}
+csv = "1.1.2"

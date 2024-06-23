@@ -1,0 +1,15 @@
+Outlook/T val,Outlook/T deg,Temp/T val,Temp/T deg,Humidity/T val,Humidity/T deg,Wind/T val,Wind/T deg,Tennis?/T val,Tennis?/T deg
+Sunny,T,Mild,T,High,T,Strong,T,No,T
+Rain,T,Hot,T,Normal,T,Strong,T,No,T
+Rain,T,Cool,T,High,T,Strong,T,No,T
+Overcast,T,Hot,T,High,T,Strong,T,Yes,T
+Overcast,T,Cool,T,Normal,T,Weak,T,Yes,T
+Rain,T,Hot,T,High,T,Weak,T,Yes,T
+Overcast,T,Mild,T,Normal,T,Weak,T,Yes,T
+Overcast,T,Cool,T,High,T,Weak,T,Yes,T
+Rain,T,Cool,T,High,T,Weak,T,Yes,T
+Rain,T,Mild,T,Normal,T,Strong,T,No,T
+Overcast,T,Mild,T,High,T,Weak,T,Yes,T
+Sunny,T,Mild,T,Normal,T,Weak,T,Yes,T
+Sunny,T,Cool,T,High,T,Strong,T,No,T
+Sunny,T,Cool,T,High,T,Weak,T,No,T
