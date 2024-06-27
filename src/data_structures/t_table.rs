@@ -37,8 +37,12 @@ impl Ttable {
         temp
     }
 
-    pub fn get_headers(&self) -> Vec<TString> {
+    pub fn get_headers_list(&self) -> Vec<TString> {
         self.header.clone()
+    }
+
+    pub fn get_header(&self, index: i32) -> TString {
+        self.header[index as usize].clone()
     }
 
     pub fn insert_header(&mut self, name: &TString) {
