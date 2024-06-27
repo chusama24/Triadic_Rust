@@ -59,6 +59,8 @@ pub mod operators{
 }
 pub mod data_structures{
     pub mod t_array;
+    pub mod t_table;
+    pub mod t_row;
 }
 #[cfg(test)]
 pub mod tests;

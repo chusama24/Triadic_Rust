@@ -1,10 +1,13 @@
 
 use crate::data_structures::t_array::TArray;
+use crate::data_structures::t_row::{DataType, Row};
+use crate::data_structures::t_table::Ttable;
+use crate::data_types::t_f32::TF32;
 use crate::data_types::t_i32::TI32;
 use crate::data_types::t_i8::TI8;
 use crate::data_types::t_string::TString;
 use crate::data_types::triadic::Triadic;
-use crate::t_enum::Degree::*;
+use crate::t_enum::{ConvertToDegree, Degree::*};
 use crate::t_print::Print;
 use crate::operators::triadic_op::*;
 use crate::type_cast::convertto_i32;
@@ -77,6 +80,36 @@ a.t_print();
 fn test5(){
   let s = TString::new("hello".to_string(), Triadic::new(T));
   s.t_print();
+}
+
+#[test]
+fn row_test(){
+  let mut row = Row::new();
+  let true_triadic = Triadic::new('t'.enum_convert());
+  let v1 = DataType::Float(TF32::new(5.0, true_triadic));
+  let v2 = DataType::String(TString::new("Hot".to_string(), true_triadic));
+  let n1 = TString::new("Outlook".to_string(), true_triadic);
+  let n2 = TString::new("Temp".to_string(), true_triadic);
+  row.insert(&n1, &v1);
+  row.insert(&n2, &v2);
+
+  let mut r2 = Row::new();
+
+  let v3 = DataType::Float(TF32::new(6.0, true_triadic));
+  let v4 = DataType::String(TString::new("Cold".to_string(), true_triadic));
+
+  r2.insert(&n1, &v3);
+  r2.insert(&n2, &v4);
+
+
+
+  let mut table = Ttable::new();
+  table.insert_header(&n1);
+  table.insert_header(&n2);
+
+  table.insert_row(&row);
+  table.insert_row(&r2);
+  table.print_table_row_wise();
 }
 
 
