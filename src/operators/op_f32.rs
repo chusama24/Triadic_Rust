@@ -934,9 +934,13 @@ impl TriadicArithmeticOp for TF32 {
             },
             Degree::L =>{
                 obj.set_degree(Triadic::new(Degree::L));
+                obj.set_value(self.get_value() + v2.get_value());
+
             },
             Degree::F =>{
                 obj.set_degree(Triadic::new(Degree::F));
+                obj.set_value(self.get_value() + v2.get_value());
+
             }
         }
         return obj;
@@ -953,9 +957,13 @@ impl TriadicArithmeticOp for TF32 {
             },
             Degree::L =>{
                 obj.set_degree(Triadic::new(Degree::L));
+                obj.set_value(self.get_value() + v2.get_value());
+
             },
             Degree::F =>{
                 obj.set_degree(Triadic::new(Degree::F));
+                obj.set_value(self.get_value() + v2.get_value());
+
             }
         }
         return obj;
@@ -971,10 +979,14 @@ impl TriadicArithmeticOp for TF32 {
                 obj.set_value(self.get_value() + v2.get_value());
             },
             Degree::L =>{
-                obj.set_degree(Triadic::new(Degree::L));                    
+                obj.set_degree(Triadic::new(Degree::L)); 
+                obj.set_value(self.get_value() + v2.get_value());
+
             },
             Degree::F =>{
-                obj.set_degree(Triadic::new(Degree::F));                    
+                obj.set_degree(Triadic::new(Degree::F));  
+                obj.set_value(self.get_value() + v2.get_value());
+
             }
         }
         return obj;
@@ -990,10 +1002,14 @@ impl TriadicArithmeticOp for TF32 {
                 obj.set_value(self.get_value() + v2.get_value());
             },
             Degree::L =>{
-                obj.set_degree(Triadic::new(Degree::L));                    
+                obj.set_degree(Triadic::new(Degree::L));    
+                obj.set_value(self.get_value() + v2.get_value());
+
             },
             Degree::F =>{
-                obj.set_degree(Triadic::new(Degree::F));                    
+                obj.set_degree(Triadic::new(Degree::F));  
+                obj.set_value(self.get_value() + v2.get_value());
+
             }
         }
         return obj;
@@ -1010,9 +1026,13 @@ impl TriadicArithmeticOp for TF32 {
             },
             Degree::L =>{
                 obj.set_degree(Triadic::new(Degree::L));
+                obj.set_value(self.get_value() - v2.get_value());
+
             },
             Degree::F =>{
                 obj.set_degree(Triadic::new(Degree::F));
+                obj.set_value(self.get_value() - v2.get_value());
+
             }
         }
         return obj;
@@ -1029,9 +1049,13 @@ impl TriadicArithmeticOp for TF32 {
             },
             Degree::L =>{
                 obj.set_degree(Triadic::new(Degree::L));
+                obj.set_value(self.get_value() - v2.get_value());
+
             },
             Degree::F =>{
                 obj.set_degree(Triadic::new(Degree::F));
+                obj.set_value(self.get_value() - v2.get_value());
+
             }
         }
         return obj;
@@ -1047,10 +1071,14 @@ impl TriadicArithmeticOp for TF32 {
                 obj.set_value(self.get_value() - v2.get_value());
             },
             Degree::L =>{
-                obj.set_degree(Triadic::new(Degree::L));                    
+                obj.set_degree(Triadic::new(Degree::L));          
+                obj.set_value(self.get_value() - v2.get_value());
+
             },
             Degree::F =>{
-                obj.set_degree(Triadic::new(Degree::F));                    
+                obj.set_degree(Triadic::new(Degree::F));  
+                obj.set_value(self.get_value() - v2.get_value());
+
             }
         }
         return obj;
@@ -1066,10 +1094,14 @@ impl TriadicArithmeticOp for TF32 {
                 obj.set_value(self.get_value() - v2.get_value());
             },
             Degree::L =>{
-                obj.set_degree(Triadic::new(Degree::L));                    
+                obj.set_degree(Triadic::new(Degree::L));   
+                obj.set_value(self.get_value() - v2.get_value());
+
             },
             Degree::F =>{
-                obj.set_degree(Triadic::new(Degree::F));                    
+                obj.set_degree(Triadic::new(Degree::F));  
+                obj.set_value(self.get_value() - v2.get_value());
+
             }
         }
         return obj;
@@ -1086,9 +1118,13 @@ impl TriadicArithmeticOp for TF32 {
             },
             Degree::L =>{
                 obj.set_degree(Triadic::new(Degree::L));
+                obj.set_value(self.get_value() * v2.get_value());
+
             },
             Degree::F =>{
                 obj.set_degree(Triadic::new(Degree::F));
+                obj.set_value(self.get_value() * v2.get_value());
+
             }
         }
         return obj;
@@ -1105,9 +1141,13 @@ impl TriadicArithmeticOp for TF32 {
             },
             Degree::L =>{
                 obj.set_degree(Triadic::new(Degree::L));
+                obj.set_value(self.get_value() * v2.get_value());
+
             },
             Degree::F =>{
                 obj.set_degree(Triadic::new(Degree::F));
+                obj.set_value(self.get_value() * v2.get_value());
+
             }
         }
         return obj;
@@ -1123,10 +1163,14 @@ impl TriadicArithmeticOp for TF32 {
                 obj.set_value(self.get_value() * v2.get_value());
             },
             Degree::L =>{
-                obj.set_degree(Triadic::new(Degree::L));                    
+                obj.set_degree(Triadic::new(Degree::L)); 
+                obj.set_value(self.get_value() * v2.get_value());
+
             },
             Degree::F =>{
-                obj.set_degree(Triadic::new(Degree::F));                    
+                obj.set_degree(Triadic::new(Degree::F));   
+                obj.set_value(self.get_value() * v2.get_value());
+
             }
         }
         return obj;
@@ -1142,10 +1186,14 @@ impl TriadicArithmeticOp for TF32 {
                 obj.set_value(self.get_value() * v2.get_value());
             },
             Degree::L =>{
-                obj.set_degree(Triadic::new(Degree::L));                    
+                obj.set_degree(Triadic::new(Degree::L));  
+                obj.set_value(self.get_value() * v2.get_value());
+
             },
             Degree::F =>{
-                obj.set_degree(Triadic::new(Degree::F));                    
+                obj.set_degree(Triadic::new(Degree::F));   
+                obj.set_value(self.get_value() * v2.get_value());
+
             }
         }
         return obj;
@@ -1162,9 +1210,13 @@ impl TriadicArithmeticOp for TF32 {
             },
             Degree::L =>{
                 obj.set_degree(Triadic::new(Degree::L));
+                obj.set_value(self.get_value() / v2.get_value());
+
             },
             Degree::F =>{
                 obj.set_degree(Triadic::new(Degree::F));
+                obj.set_value(self.get_value() / v2.get_value());
+
             }
         }
         return obj;
@@ -1181,9 +1233,13 @@ impl TriadicArithmeticOp for TF32 {
             },
             Degree::L =>{
                 obj.set_degree(Triadic::new(Degree::L));
+                obj.set_value(self.get_value() / v2.get_value());
+
             },
             Degree::F =>{
                 obj.set_degree(Triadic::new(Degree::F));
+                obj.set_value(self.get_value() / v2.get_value());
+
             }
         }
         return obj;
@@ -1199,10 +1255,14 @@ impl TriadicArithmeticOp for TF32 {
                 obj.set_value(self.get_value() / v2.get_value());
             },
             Degree::L =>{
-                obj.set_degree(Triadic::new(Degree::L));                    
+                obj.set_degree(Triadic::new(Degree::L));     
+                obj.set_value(self.get_value() / v2.get_value());
+
             },
             Degree::F =>{
-                obj.set_degree(Triadic::new(Degree::F));                    
+                obj.set_degree(Triadic::new(Degree::F));   
+                obj.set_value(self.get_value() / v2.get_value());
+
             }
         }
         return obj;
@@ -1218,10 +1278,14 @@ impl TriadicArithmeticOp for TF32 {
                 obj.set_value(self.get_value() / v2.get_value());
             },
             Degree::L =>{
-                obj.set_degree(Triadic::new(Degree::L));                    
+                obj.set_degree(Triadic::new(Degree::L));  
+                obj.set_value(self.get_value() / v2.get_value());
+
             },
             Degree::F =>{
-                obj.set_degree(Triadic::new(Degree::F));                    
+                obj.set_degree(Triadic::new(Degree::F));    
+                obj.set_value(self.get_value() / v2.get_value());
+
             }
         }
         return obj;
@@ -1238,9 +1302,13 @@ impl TriadicArithmeticOp for TF32 {
             },
             Degree::L =>{
                 obj.set_degree(Triadic::new(Degree::L));
+                obj.set_value(self.get_value() % v2.get_value());
+
             },
             Degree::F =>{
                 obj.set_degree(Triadic::new(Degree::F));
+                obj.set_value(self.get_value() % v2.get_value());
+
             }
         }
         return obj;
@@ -1257,9 +1325,13 @@ impl TriadicArithmeticOp for TF32 {
             },
             Degree::L =>{
                 obj.set_degree(Triadic::new(Degree::L));
+                obj.set_value(self.get_value() % v2.get_value());
+
             },
             Degree::F =>{
                 obj.set_degree(Triadic::new(Degree::F));
+                obj.set_value(self.get_value() % v2.get_value());
+
             }
         }
         return obj;
@@ -1275,10 +1347,14 @@ impl TriadicArithmeticOp for TF32 {
                 obj.set_value(self.get_value() % v2.get_value());
             },
             Degree::L =>{
-                obj.set_degree(Triadic::new(Degree::L));                    
+                obj.set_degree(Triadic::new(Degree::L));        
+                obj.set_value(self.get_value() % v2.get_value());
+
             },
             Degree::F =>{
-                obj.set_degree(Triadic::new(Degree::F));                    
+                obj.set_degree(Triadic::new(Degree::F));    
+                obj.set_value(self.get_value() % v2.get_value());
+
             }
         }
         return obj;
@@ -1294,10 +1370,14 @@ impl TriadicArithmeticOp for TF32 {
                 obj.set_value(self.get_value() % v2.get_value());
             },
             Degree::L =>{
-                obj.set_degree(Triadic::new(Degree::L));                    
+                obj.set_degree(Triadic::new(Degree::L));      
+                obj.set_value(self.get_value() % v2.get_value());
+
             },
             Degree::F =>{
-                obj.set_degree(Triadic::new(Degree::F));                    
+                obj.set_degree(Triadic::new(Degree::F));   
+                obj.set_value(self.get_value() % v2.get_value());
+
             }
         }
         return obj;
