@@ -61,6 +61,10 @@ impl Ttable {
 
     pub fn insert_header(&mut self, name: &TString) {
         self.header.push(name.clone());
+        let deg = self.header.get_degree();
+        let mut temp = TString::default();
+        temp.set_degree(deg);
+        self.header.set_degree(name.tand_1(&temp));
     }
 
     pub fn insert_header_list(&mut self, names: &Vec<TString>) {
