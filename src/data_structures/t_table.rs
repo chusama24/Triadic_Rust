@@ -1,23 +1,23 @@
-use crate::{data_types::t_string::TString, t_print::Print};
+use crate::{data_types::{t_string::TString, triadic::Triadic, triadic_type::Ttypes}, operators::triadic_op::TriadicStringOp, t_enum::ConvertToDegree, t_print::Print};
 
-use super::t_row::{DataType, Row};
+use super::{t_array::TArray, t_row::{RDataType, TRow}};
 
 
 pub struct Ttable {
-    header: Vec<TString>,
-    data: Vec<Row>
+    header: TArray<TString>,
+    data: Vec<TRow>
 }
 
 impl Ttable {
     pub fn new() -> Ttable{
-        Ttable{data: Vec::<Row>::new(), header: Vec::<TString>::new()}
+        Ttable{data: Vec::<TRow>::new(), header: TArray::<TString>::default()}
     }
 
-    pub fn insert_row(&mut self, row: &Row) {
+    pub fn insert_row(&mut self, row: &TRow) {
         self.data.push(row.clone());
     }
 
-    pub fn get_row(&self, index: i32) -> Row {
+    pub fn get_row(&self, index: i32) -> TRow {
         let i = index as usize;
         self.data[i].clone()
     }
@@ -26,8 +26,8 @@ impl Ttable {
         self.data.len()
     }
 
-    pub fn get_column(&self, name: &TString) -> Vec<DataType> {
-        let mut temp = Vec::<DataType>::new();
+    pub fn get_column_by_name(&self, name: &TString) -> Vec<RDataType> {
+        let mut temp = Vec::<RDataType>::new();
         for r in self.data.iter(){
             let val = r.get_value(&name);
             if let Some(v) = val {
@@ -37,12 +37,26 @@ impl Ttable {
         temp
     }
 
-    pub fn get_headers_list(&self) -> Vec<TString> {
+    pub fn get_column_by_index(&self, index: i32) -> Vec<RDataType> {
+        let mut temp = Vec::<RDataType>::new();
+
+        let attr = self.get_header(index);
+        for r in self.data.iter(){
+            let val = r.get_value(&attr);
+            if let Some(v) = val {
+                temp.push(v);
+            }
+        }
+        temp
+
+    }
+
+    pub fn get_headers_list(&self) -> TArray<TString> {
         self.header.clone()
     }
 
     pub fn get_header(&self, index: i32) -> TString {
-        self.header[index as usize].clone()
+        self.header.get_value()[index as usize].clone()
     }
 
     pub fn insert_header(&mut self, name: &TString) {
@@ -50,28 +64,35 @@ impl Ttable {
     }
 
     pub fn insert_header_list(&mut self, names: &Vec<TString>) {
-        self.header = names.clone();
+        let temp = Triadic::new('t'.enum_convert());
+        let mut tstring = TString::new("".to_string(), temp);
+        for i in names.iter(){
+          let t = tstring.tand_1(i);
+          tstring.set_degree(t);
+        }
+        self.header.set_vector(names.clone());
+        self.header.set_degree(tstring.get_degree());
     }
 
     pub fn print_table_row_wise(&self) {
         let mut i = 0;
         for r in self.data.iter(){
-            println!("Row {}: ", i);
+            println!("TRow {}: ", i);
             r.print_row();
             i += 1;
         }
     }
 
     pub fn print_table_col_wise(&self) {
-        for name in self.header.iter() {
+        for name in self.header.get_value().iter() {
             println!("Column Name: ");
             name.t_print();
-            let temp = self.get_column(&name);
+            let temp = self.get_column_by_name(&name);
 
             for val in temp {
                 match val {
-                    DataType::Float(v) => v.t_print(),
-                    DataType::String(v) => v.t_print(),
+                    RDataType::Float(v) => v.t_print(),
+                    RDataType::String(v) => v.t_print(),
                     _ => println!("None")
                 }
             }

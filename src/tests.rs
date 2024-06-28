@@ -1,6 +1,6 @@
 
 use crate::data_structures::t_array::TArray;
-use crate::data_structures::t_row::{DataType, Row};
+use crate::data_structures::t_row::{RDataType, TRow};
 use crate::data_structures::t_table::Ttable;
 use crate::data_types::t_f32::TF32;
 use crate::data_types::t_i32::TI32;
@@ -84,19 +84,19 @@ fn test5(){
 
 #[test]
 fn row_test(){
-  let mut row = Row::new();
+  let mut row = TRow::new();
   let true_triadic = Triadic::new('t'.enum_convert());
-  let v1 = DataType::Float(TF32::new(5.0, true_triadic));
-  let v2 = DataType::String(TString::new("Hot".to_string(), true_triadic));
+  let v1 = RDataType::Float(TF32::new(5.0, true_triadic));
+  let v2 = RDataType::String(TString::new("Hot".to_string(), true_triadic));
   let n1 = TString::new("Outlook".to_string(), true_triadic);
   let n2 = TString::new("Temp".to_string(), true_triadic);
   row.insert(&n1, &v1);
   row.insert(&n2, &v2);
 
-  let mut r2 = Row::new();
+  let mut r2 = TRow::new();
 
-  let v3 = DataType::Float(TF32::new(6.0, true_triadic));
-  let v4 = DataType::String(TString::new("Cold".to_string(), true_triadic));
+  let v3 = RDataType::Float(TF32::new(6.0, true_triadic));
+  let v4 = RDataType::String(TString::new("Cold".to_string(), true_triadic));
 
   r2.insert(&n1, &v3);
   r2.insert(&n2, &v4);
