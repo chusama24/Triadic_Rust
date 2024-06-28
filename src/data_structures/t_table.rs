@@ -60,8 +60,13 @@ impl Ttable {
     }
 
     pub fn insert_header(&mut self, name: &TString) {
+        
+        let mut deg = self.header.get_degree();
+        if self.header.get_value().len() == 0 {
+            deg.set_value('t'.enum_convert());
+        }
+
         self.header.push(name.clone());
-        let deg = self.header.get_degree();
         let mut temp = TString::default();
         temp.set_degree(deg);
         self.header.set_degree(name.tand_1(&temp));
