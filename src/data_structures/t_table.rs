@@ -121,6 +121,30 @@ impl Ttable {
         }
     }
 
+    pub fn get_column_type(&self, index: i32) -> String {
+        let attr = self.get_header(index);
+        let mut i = 0;
+        loop {
+            if i >= self.data.len(){
+                break;
+            }
+            let val =  self.data[i].get_value(&attr);
+            if let Some(v) = val {
+                match v {
+                    RDataType::Char(_c) => return "char".to_string(),
+                    RDataType::Float(_c) => return "float".to_string(),
+                    RDataType::Integer(_c) => return "integer".to_string(),
+                    RDataType::String(_c) => return "string".to_string(),
+                    _ => return "None".to_string()
+                }
+            }
+            else {
+                i += 1;
+            }
+        }
+        return "None".to_string();
+    }
+
    pub fn read_data(file_path: String) -> Result<Ttable, std::io::Error>{
         // Open the file
         let f: File;
@@ -202,9 +226,7 @@ impl Ttable {
         }
      }    
         Ok(table)
-    }
-
-  
+    }  
 }
 
 pub fn convert_input(input: String)-> RDataType {
