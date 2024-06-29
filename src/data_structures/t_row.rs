@@ -1,12 +1,14 @@
 use std::collections::HashMap;
 
-use crate::{data_types::{t_f32::TF32, t_string::TString, triadic::Triadic}, operators::triadic_op::{TriadicLogicalOp, TriadicStringOp}, t_print::Print};
+use crate::{data_types::{t_char::TChar, t_f32::TF32, t_i32::TI32, t_string::TString, triadic::Triadic}, operators::triadic_op::{TriadicLogicalOp, TriadicStringOp}, t_print::Print};
 
 
 #[derive(Clone)]
 pub enum RDataType{
     Float(TF32),
     String(TString),
+    Integer(TI32),
+    Char(TChar),
     Empty
 }
 
@@ -45,6 +47,14 @@ impl TRow {
                 let t = TString::new("".to_string(), self.get_degree());
                 self.set_degree(&t.tand_1(tstring));
             },
+            RDataType::Integer(ti32) => {
+                let t = TI32::new(0, self.get_degree());
+                self.set_degree(&t.tand_1(*ti32));
+            },
+            RDataType::Char(c) => {
+                let t = TChar::new('0', self.get_degree());
+                self.set_degree(&t.tand_1(*c));
+            }
             _ => {
                 self.set_degree(&Triadic::default());                
             }
@@ -66,6 +76,8 @@ impl TRow {
             match v {
                 RDataType::Float(tf32) => tf32.t_print(),
                 RDataType::String(tstring) => tstring.t_print(),
+                RDataType::Integer(ti32) => ti32.t_print(),
+                RDataType::Char(c) => c.t_print(),
                 _ => print!("None") 
             }
         }

@@ -1,5 +1,8 @@
-use crate::{data_types::{t_string::TString, triadic::Triadic, triadic_type::Ttypes}, operators::triadic_op::TriadicStringOp, t_enum::ConvertToDegree, t_print::Print};
-
+use crate::{data_types::{t_char::TChar, t_f32::TF32, t_i32::TI32, t_string::TString, triadic::Triadic, triadic_type::Ttypes}, operators::triadic_op::TriadicStringOp, t_enum::ConvertToDegree, t_print::Print};
+use std::str::FromStr;
+use std::fs::File;
+use std::io::BufReader;
+use csv::Reader;
 use super::{t_array::TArray, t_row::{RDataType, TRow}};
 
 
@@ -15,6 +18,13 @@ impl Ttable {
 
     pub fn insert_row(&mut self, row: &TRow) {
         self.data.push(row.clone());
+    }
+
+    pub fn insert_val(&mut self, val: RDataType, row_index: i32, col_name: TString) {
+        let index = row_index as usize;
+        if index  < self.data.len(){
+            self.data[index].insert(&col_name, &val);
+        }
     }
 
     pub fn get_row(&self, index: i32) -> TRow {
@@ -102,10 +112,122 @@ impl Ttable {
                 match val {
                     RDataType::Float(v) => v.t_print(),
                     RDataType::String(v) => v.t_print(),
+                    RDataType::Integer(v)=> v.t_print(),
+                    RDataType::Char(v) => v.t_print(),
                     _ => println!("None")
                 }
             }
 
         }
+    }
+
+   pub fn read_data(file_path: String) -> Result<Ttable, std::io::Error>{
+        // Open the file
+        let f: File;
+        match File::open(file_path) {
+            Ok(file) => {
+                println!("File successfully opened!");
+                f = file;
+            }
+            Err(err) => {
+                return Err(err);
+            }
+        }
+        let reader = BufReader::new(f);
+    
+        let mut table = Ttable::new();
+    
+        // Create a CSV reader
+        let mut csv_reader = Reader::from_reader(reader);
+    
+        let headers = csv_reader.headers()?;
+        let mut i = 0;
+            for header in headers{
+                if i % 2 == 1{
+                    i += 1;
+                    continue;
+                }
+                i += 1;
+                let names= header.split('/');
+                let mut name = String::new();
+                let mut temp_deg = char::default();
+                for (j,w) in names.enumerate(){
+                    if j == 0{
+                        name = w.to_string();
+                    }
+                    else{
+                        let d = w.split(' ');
+                        for (_k,w2) in d.enumerate(){
+                            temp_deg = w2.to_string().trim().parse().expect("Expected a character");
+                            break;
+                        }
+                    }
+                };
+                let n = TString::new(name.clone(), Triadic::new(temp_deg.enum_convert()));
+                table.insert_header(&n);
+            }
+    
+    let records = csv_reader.records();
+     for record in records.into_iter(){
+        match record {
+            Ok(record) => { 
+                let mut i = 0;
+                let mut temp = RDataType::Empty;
+                let mut row = TRow::new();
+                for r in &record{
+                    if i % 2 == 0{
+                        temp = convert_input(r.to_string());
+                    }
+                        else {
+                            let deg: char = r.to_string().trim().parse().expect("Expected a character");
+                            let d = Triadic::new(deg.enum_convert());
+                            let index: i32 = (i-1)/2;
+                            let attr = table.get_header(index);
+                            match temp {
+                                RDataType::Char(mut v) => v.set_degree(d),
+                                RDataType::Float(mut v) => v.set_degree(d),
+                                RDataType::Integer(mut v) => v.set_degree(d),
+                                RDataType::String(ref mut v) => v.set_degree(d),
+                                _ => println!("Error"),
+                            }
+                            row.insert(&attr, &temp);
+                    }
+                    i += 1;
+                }
+                table.insert_row(&row);
+            }
+            Err(error) => {
+                println!("Error while reading record: {}", error); 
+            }
+        }
+     }    
+        Ok(table)
+    }
+
+  
+}
+
+pub fn convert_input(input: String)-> RDataType {
+    match i32::from_str(&input){
+        Ok(num) => {
+           return RDataType::Integer(TI32::new(num, Triadic::default()))
+        },
+        Err(_err) => {
+            match f32::from_str(&input){
+                Ok(num) => {
+                    return RDataType::Float(TF32::new(num, Triadic::default()))
+                }, 
+                Err(_err) => {
+                    match char::from_str(&input){
+                        Ok(c) => {
+                            return RDataType::Char(TChar::new(c, Triadic::default()))
+                        },
+                        Err(_err) => {
+                            return RDataType::String(TString::new(input, Triadic::default()))
+                        }
+                    }
+                }
+            }
+        },
     }
 }
