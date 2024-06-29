@@ -1,7 +1,7 @@
 use crate::data_types::triadic_type::Ttypes;
 use super::triadic::Triadic;
 
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash)]
 pub struct TChar {
     value: char,
     deg: Triadic,
