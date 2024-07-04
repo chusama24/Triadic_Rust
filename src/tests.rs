@@ -7,7 +7,7 @@ use crate::data_types::t_i32::TI32;
 use crate::data_types::t_i8::TI8;
 use crate::data_types::t_string::TString;
 use crate::data_types::triadic::Triadic;
-use crate::t_enum::{ConvertToDegree, Degree::*};
+use crate::t_enum::{ConvertToDegree, Degree::{self, *}};
 use crate::t_print::Print;
 use crate::operators::triadic_op::*;
 use crate::type_cast::convertto_i32;
@@ -112,4 +112,41 @@ fn row_test(){
   table.print_table_row_wise();
 }
 
+
+#[test]
+fn comparison(){
+  let t2 = Triadic::default();
+
+  let t = Triadic::new('t'.enum_convert());
+    let f = Triadic::new('f'.enum_convert());
+    let l = Triadic::default();
+
+    match t2.get_value() {
+      Degree::T => {
+
+      }, 
+      Degree::F => {
+
+      },
+      Degree::L => {
+
+      }
+    }
+
+    if t2 == f {
+      println!("SMAE")
+    }
+}
+
+#[test]
+fn compare_string(){
+  let a = TString::new("hello".to_owned(), Triadic::default());
+  let b = TString::new("hellod".to_owned(), Triadic::new('l'.enum_convert()));
+if a == b{
+  println!("True");
+}
+else{
+  println!("False");
+}
+}
 

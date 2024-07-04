@@ -93,6 +93,16 @@ impl Ttable {
         self.header.set_degree(tstring.get_degree());
     }
 
+    pub fn remove_header(&mut self, name: &TString) {
+        let mut i = 0;
+        for n in self.header.get_value() {
+            if n == *name {
+                self.header.remove(i);
+            }
+            i += 1;
+        }
+    }
+
     pub fn print_table_row_wise(&self) {
         let mut i = 0;
         for r in self.data.iter(){
@@ -145,7 +155,7 @@ impl Ttable {
         return "None".to_string();
     }
 
-   pub fn read_data(file_path: String) -> Result<Ttable, std::io::Error>{
+   pub fn read_data(file_path: String, class_label: TString) -> Result<Ttable, std::io::Error>{
         // Open the file
         let f: File;
         match File::open(file_path) {
@@ -190,6 +200,9 @@ impl Ttable {
                 let n = TString::new(name.clone(), Triadic::new(temp_deg.enum_convert()));
                 table.insert_header(&n);
             }
+
+            table.remove_header(&class_label);
+            table.insert_header(&class_label);
     
     let records = csv_reader.records();
      for record in records.into_iter(){
