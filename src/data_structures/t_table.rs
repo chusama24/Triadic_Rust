@@ -24,7 +24,7 @@ impl Ttable {
         let index = row_index as usize;
         if index  < self.data.len(){
             self.data[index].insert(&col_name, &val);
-        }
+        } 
     }
 
     pub fn get_row(&self, index: i32) -> TRow {
@@ -49,7 +49,7 @@ impl Ttable {
 
     pub fn get_column_by_index(&self, index: i32) -> Vec<RDataType> {
         let mut temp = Vec::<RDataType>::new();
-
+RDataType::Integer(TI32::default());
         let attr = self.get_header(index);
         for r in self.data.iter(){
             let val = r.get_value(&attr);
@@ -182,7 +182,9 @@ impl Ttable {
                     continue;
                 }
                 i += 1;
+                // Outlook/T val
                 let names= header.split('/');
+                // "Outlook" , "T val"
                 let mut name = String::new();
                 let mut temp_deg = char::default();
                 for (j,w) in names.enumerate(){
@@ -191,6 +193,7 @@ impl Ttable {
                     }
                     else{
                         let d = w.split(' ');
+                        // "T" , "val"
                         for (_k,w2) in d.enumerate(){
                             temp_deg = w2.to_string().trim().parse().expect("Expected a character");
                             break;
@@ -203,6 +206,8 @@ impl Ttable {
 
             table.remove_header(&class_label);
             table.insert_header(&class_label);
+
+
     
     let records = csv_reader.records();
      for record in records.into_iter(){

@@ -19,9 +19,10 @@ pub struct TRow {
     degree: Triadic
 }
 
+
 impl TRow {
     pub fn new() -> TRow {
-        TRow{data: HashMap::<TString, RDataType>::new(), degree: Triadic::default()}
+        TRow{data: HashMap::<TString, RDataType>::new(), degree: Triadic::new(crate::t_enum::Degree::T)}
     }
 
     pub fn get_row(&self) -> HashMap<TString, RDataType> {
