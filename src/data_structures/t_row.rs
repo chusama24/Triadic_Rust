@@ -70,6 +70,7 @@ impl TRow {
     }
 
     pub fn print_row(&self) {
+      
         for (k,v) in self.data.iter() {
             print!("Name: ");
             k.t_print();
