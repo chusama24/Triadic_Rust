@@ -204,8 +204,8 @@ RDataType::Integer(TI32::default());
                 table.insert_header(&n);
             }
 
-            table.remove_header(&class_label);
-            table.insert_header(&class_label);
+            // table.remove_header(&class_label);
+            // table.insert_header(&class_label);
 
 
     
