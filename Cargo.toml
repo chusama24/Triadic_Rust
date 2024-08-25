@@ -1,0 +1,8 @@
+[package]
+name = "multinomial_naive_bayes"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+triadic_rust = {git = "https://github.com/chusama24/Triadic_Rust", branch= "main"}
+stop-words = { git = "https://github.com/cmccomb/rust-stop-words", branch = "master"}
