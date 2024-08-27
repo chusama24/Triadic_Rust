@@ -1,7 +1,7 @@
 
-use std::{collections::HashMap, f32::consts::PI};
+use std::collections::HashMap;
 
-use triadic_rust::{data_structures::{t_row::{RDataType, TRow}, t_table::Ttable}, data_types::{t_f32::TF32, t_i32::TI32, t_string::TString, triadic::Triadic, triadic_type::Ttypes}, operators::triadic_op::TriadicArithmeticOp, t_enum::Degree, t_print::Print};
+use triadic_rust::{data_structures::{t_row::RDataType, t_table::Ttable}, data_types::{t_f32::TF32, t_string::TString, triadic::Triadic, triadic_type::Ttypes}, t_enum::Degree, t_print::Print};
 
 pub fn remove_non_alphanumeric(text: &str) -> String {
     text.chars()
@@ -125,7 +125,7 @@ for di in document_indices.iter(){
                     //print!("{} ",str);
                     let words: Vec<&str> = str.split_whitespace().collect();
                     for w in words{
-                        let mut w_store =w.to_lowercase(); 
+                        let w_store =w.to_lowercase(); 
                         let cleaned_text= remove_non_alphanumeric(&w_store); 
                         if cleaned_text.len() == 0{
                             continue;

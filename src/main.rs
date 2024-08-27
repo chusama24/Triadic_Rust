@@ -42,7 +42,6 @@ fn bernoulli_naive_bayes(
     println!("bernoulli_naive_bayes: Vocab saved.");
     for j in labels.iter(){
         let mut temp_map: InnerMap = HashMap::new();
-        let mut count =0.0;
         let number_of_documents: Option<&Vec<i32>>=data_points.get(j);
         match number_of_documents{
             Some(number_of_documents) => {
@@ -53,7 +52,7 @@ fn bernoulli_naive_bayes(
                 if v.get_degree()!=true_check{
                     continue;
                 }
-                count = get_no_of_document_containing_words(&data,number_of_documents.clone(),v.clone(),document_label.clone());
+              let count = get_no_of_document_containing_words(&data,number_of_documents.clone(),v.clone(),document_label.clone());
                 
                 let p_w_c= (count+alpha)as f32/(num + 2.0*alpha)as f32;
                 println!("value{}  probability:{}",p_w_c,v.get_value());
