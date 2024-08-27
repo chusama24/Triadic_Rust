@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use triadic_rust::{data_structures::{t_row::RDataType, t_table::Ttable}, data_types::{t_string::TString, triadic::Triadic, triadic_type::Ttypes}, t_enum::Degree, t_print::Print};
+use triadic_rust::{data_structures::{t_row::RDataType, t_table::Ttable}, data_types::{t_string::TString, triadic::Triadic, triadic_type::Ttypes}, t_enum::Degree};
 
 pub fn get_data_points(data: Vec<RDataType>, key: TString) -> Vec<i32> {
     let mut examples = Vec::<i32>::new();
@@ -167,7 +167,7 @@ pub fn total_words_in_a_class(data:&Ttable,no_of_doc:Vec<i32>,document_label:TSt
                                 continue;
                             }
                             
-                                total_words+=1.0;
+                                total_words = total_words+ 1.0;
                         }
                     },
                     _=>print!{"get_no_of_document_containing_words: Data type not found"},

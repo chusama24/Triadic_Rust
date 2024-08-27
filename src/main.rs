@@ -42,7 +42,7 @@ pub fn model_traning(data:&Ttable,class_label:TString,document_label:TString)->(
     let (vocab,class_total_words) =get_vocab(&data,document_label.clone(),class_label);
     let mut vocab_size= 0 as i32;
 
-    for (k,v) in vocab.iter(){
+    for (_k,v) in vocab.iter(){
         vocab_size+=v;
     }
     //print!("{}",vocab_size);
@@ -57,7 +57,7 @@ pub fn model_traning(data:&Ttable,class_label:TString,document_label:TString)->(
                 let total_words =*class_total_words.get(j).expect("Total word in a class not found") as f32;
                 //let total_words= total_words_in_a_class(data,no_of_doc.clone(),document_label.clone());
                 //Word Count
-                for (k,v) in vocab.iter(){
+                for (k,_v) in vocab.iter(){
                     if k.get_degree()!=true_check{
                         continue;
                     }
@@ -84,7 +84,7 @@ pub fn read_data(training:String,class_label:TString)->Ttable{
     data
 }
 
-pub fn model_testing(data:TRow,trained_model:(HashMap<TString, TF32>, HashMap<TString, HashMap<TString, f32>>,HashMap<TString,i32>),document_label: TString,class_label: TString)
+pub fn model_testing(data:TRow,trained_model:(HashMap<TString, TF32>, HashMap<TString, HashMap<TString, f32>>,HashMap<TString,i32>),document_label: TString)
 {
     let doc = data.get_value(&document_label);
     let stop_words = stop_words::get(stop_words::LANGUAGE::English);
@@ -195,6 +195,6 @@ fn main() {
     
     let size =testing_data.get_size();
     for i in 0..size{
-        model_testing(testing_data.get_row(i as i32),trained_model.clone(),document_label.clone(),class_label.clone());
+        model_testing(testing_data.get_row(i as i32),trained_model.clone(),document_label.clone());
     }
 }
