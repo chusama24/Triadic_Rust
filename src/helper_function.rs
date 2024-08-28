@@ -141,6 +141,37 @@ pub fn get_vocab(data:&Ttable,col_name:TString,class_label:TString)->(HashMap<TS
     count
 }
 
+
+pub fn get_total_of_document_in_degree(class_col: Vec<RDataType>, deg: Triadic) -> i32 {
+    let mut count = 0;
+    for c in class_col.iter() {
+            match c {
+                RDataType::String(str) => {
+                    if str.get_degree() == deg {
+                        count = count + 1;
+                    }
+                },
+                RDataType::Char(ch) => {
+                    if ch.get_degree() == deg {
+                        count = count + 1;
+                    }
+                },
+                _ => println!("get_total_of_document_in_degree: Invalid Class label datatype")
+            }
+    }
+    count
+}
+
+pub fn get_class_labels_without_degree(class_labels: Vec<&TString>) -> Vec<String>{
+    let mut labels = Vec::<String>::new();
+    for cl in class_labels.iter(){
+            if !labels.contains(&cl.get_value()){
+                labels.push(cl.get_value());
+            }
+    }
+    labels
+}
+
 pub fn total_words_in_a_class(data:&Ttable,no_of_doc:Vec<i32>,document_label:TString)->f32
 {
     let total_words=0.0 ;

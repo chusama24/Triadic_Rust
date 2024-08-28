@@ -1,0 +1,126 @@
+Class/T val,Class/T deg,Sentence/T val,Sentence/T deg
+Negative,T,I am so sad.,F
+Negative,T,I am so sad.,L
+Negative,F,I am so sad.,T
+Negative,F,I am so sad.,F
+Negative,L,I am so sad.,L
+Positive,T,This is enjoyable.,T
+Positive,T,This is enjoyable.,F
+Positive,T,This is enjoyable.,L
+Positive,F,This is enjoyable.,T
+Positive,F,This is enjoyable.,F
+Positive,F,This is enjoyable.,L
+Positive,L,This is enjoyable.,F
+Positive,L,This is enjoyable.,L
+Negative,T,This is awful.,F
+Negative,T,This is awful.,L
+Negative,F,This is awful.,L
+Negative,L,This is awful.,T
+Negative,L,This is awful.,F
+Negative,L,This is awful.,L
+Positive,T,I am happy.,T
+Positive,T,I am happy.,F
+Positive,T,I am happy.,L
+Positive,F,I am happy.,T
+Positive,F,I am happy.,F
+Positive,L,I am happy.,T
+Negative,T,I hate this place.,T
+Negative,T,I hate this place.,F
+Negative,T,I hate this place.,L
+Negative,F,I hate this place.,T
+Negative,F,I hate this place.,F
+Negative,L,I hate this place.,T
+Negative,L,I hate this place.,F
+Negative,L,I hate this place.,L
+Positive,T,I had a great time.,T
+Positive,T,I had a great time.,L
+Positive,F,I had a great time.,T
+Positive,F,I had a great time.,F
+Positive,F,I had a great time.,L
+Positive,L,I had a great time.,T
+Positive,L,I had a great time.,L
+Positive,T,This is amazing!,F
+Positive,T,This is amazing!,L
+Positive,F,This is amazing!,T
+Positive,L,This is amazing!,T
+Positive,L,This is amazing!,L
+Negative,T,I hate this.,T
+Negative,T,I hate this.,F
+Negative,T,I hate this.,L
+Negative,F,I hate this.,T
+Negative,F,I hate this.,F
+Negative,F,I hate this.,L
+Negative,L,I hate this.,T
+Negative,L,I hate this.,F
+Negative,L,I hate this.,L
+Negative,T,This is terrible.,T
+Negative,T,This is terrible.,F
+Negative,F,This is terrible.,T
+Negative,F,This is terrible.,F
+Negative,L,This is terrible.,T
+Negative,L,This is terrible.,F
+Negative,L,This is terrible.,L
+Positive,T,I love it!,F
+Positive,F,I love it!,T
+Positive,F,I love it!,L
+Positive,L,I love it!,L
+Negative,T,I hate this place.,F
+Negative,T,I hate this place.,L
+Negative,F,I hate this place.,T
+Negative,L,I hate this place.,F
+Negative,L,I hate this place.,L
+Positive,T,This is fantastic!,T
+Positive,T,This is fantastic!,F
+Positive,T,This is fantastic!,L
+Positive,F,This is fantastic!,T
+Positive,F,This is fantastic!,F
+Positive,F,This is fantastic!,L
+Positive,L,This is fantastic!,T
+Positive,L,This is fantastic!,L
+Negative,T,I am so sad.,T
+Negative,T,I am so sad.,F
+Negative,F,I am so sad.,T
+Negative,F,I am so sad.,F
+Negative,L,I am so sad.,T
+Negative,L,I am so sad.,F
+Negative,L,I am so sad.,L
+Positive,T,I love this place.,T
+Positive,T,I love this place.,F
+Positive,T,I love this place.,L
+Positive,L,I love this place.,F
+Negative,T,This is terrible.,T
+Negative,T,This is terrible.,L
+Negative,F,This is terrible.,T
+Negative,F,This is terrible.,F
+Negative,F,This is terrible.,L
+Negative,L,This is terrible.,F
+Negative,L,This is terrible.,L
+Positive,T,This is fantastic!,T
+Positive,T,This is fantastic!,F
+Positive,T,This is fantastic!,L
+Positive,F,This is fantastic!,T
+Positive,F,This is fantastic!,F
+Positive,F,This is fantastic!,L
+Positive,L,This is fantastic!,T
+Positive,L,This is fantastic!,F
+Positive,L,This is fantastic!,L
+Negative,F,I am so sad.,T
+Negative,F,I am so sad.,F
+Negative,F,I am so sad.,L
+Negative,L,I am so sad.,T
+Positive,T,I love this place.,F
+Positive,T,I love this place.,L
+Positive,F,I love this place.,F
+Positive,F,I love this place.,L
+Positive,L,I love this place.,F
+Positive,L,I love this place.,L
+Negative,T,This is terrible.,T
+Negative,T,This is terrible.,F
+Negative,F,This is terrible.,T
+Negative,L,This is terrible.,L
+Positive,T,I am happy.,T
+Positive,T,I am happy.,F
+Positive,T,I am happy.,L
+Positive,F,I am happy.,T
+Positive,F,I am happy.,F
+Positive,L,I am happy.,F
