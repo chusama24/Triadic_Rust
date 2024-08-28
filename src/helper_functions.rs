@@ -148,4 +148,22 @@ for di in document_indices.iter(){
 count
 }
 
-
+pub fn get_total_of_document_in_degree(class_col: Vec<RDataType>, deg: Triadic) -> i32 {
+    let mut count = 0;
+    for c in class_col.iter() {
+            match c {
+                RDataType::String(str) => {
+                    if str.get_degree() == deg {
+                        count = count + 1;
+                    }
+                },
+                RDataType::Char(ch) => {
+                    if ch.get_degree() == deg {
+                        count = count + 1;
+                    }
+                },
+                _ => println!("get_total_of_document_in_degree: Invalid Class label datatype")
+            }
+    }
+    count
+}
