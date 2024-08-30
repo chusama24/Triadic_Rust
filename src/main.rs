@@ -1,11 +1,15 @@
-use std::{collections::HashMap, io::stdin};
+use std::collections::HashMap;
 pub mod helper_function;
 use helper_function::*;
 use triadic_rust::{
     data_structures::{
         t_row::{RDataType, TRow},
         t_table::Ttable,
-    }, data_types::{t_f32::TF32, t_string::TString, triadic::Triadic, triadic_type::Ttypes}, operators::triadic_op::TriadicArithmeticOp, t_enum::Degree, t_print::Print
+    },
+    data_types::{t_f32::TF32, t_string::TString, triadic::Triadic, triadic_type::Ttypes},
+    operators::triadic_op::TriadicArithmeticOp,
+    t_enum::Degree,
+    t_print::Print,
 };
 
 pub fn model_traning(
@@ -15,11 +19,9 @@ pub fn model_traning(
 ) -> (
     HashMap<TString, TF32>,
     HashMap<TString, HashMap<TString, TF32>>,
+    HashMap<TString, HashMap<TString, i32>>,
     HashMap<TString, i32>,
 ) {
-    type InnerMap = HashMap<TString, TF32>;
-    type OuterMap = HashMap<TString, InnerMap>;
-    let mut prob_w_c: OuterMap = HashMap::new();
 
     let mut degrees = Vec::<Triadic>::new();
     degrees.push(Triadic::new(Degree::T));
@@ -67,13 +69,14 @@ pub fn model_traning(
     let (vocab, class_total_words) = get_vocab(&data, document_label.clone(), class_label);
     let mut vocab_size = 0 as i32;
 
-    for (_k, v) in vocab.iter() {
-        vocab_size += v;
+    for (_k, val) in vocab.iter() {
+        for (_k1, v) in val {
+            vocab_size += v;
+        }
     }
     //print!("{}",vocab_size);
     for j in labels.iter() {
         let no_of_doc = data_points.get(j);
-        let mut temp_map: InnerMap = HashMap::new();
         match no_of_doc {
             Some(no_of_doc) => {
                 let num = no_of_doc.len() as f32;
@@ -82,40 +85,13 @@ pub fn model_traning(
                     .expect("Unable to find total number of documents");
                 let prob_of_class = TF32::new(num / (*total as f32), j.get_degree());
                 class_probabilities.insert(j.clone(), prob_of_class);
-                let total_words = *class_total_words
-                    .get(j)
-                    .expect("Total word in a class not found")
-                    as f32;
-                //let total_words= total_words_in_a_class(data,no_of_doc.clone(),document_label.clone());
-                //Word Count
-                for (k, _v) in vocab.iter() {
-                    if k.get_degree() == degrees[1].clone() {
-                        continue;
-                    }
-
-                    // if k.get_degree()!= degrees[0].clone(){
-                    //     continue;
-                    // }
-
-                    let word_count = get_no_of_document_containing_words(
-                        &data,
-                        no_of_doc.clone(),
-                        k.clone(),
-                        document_label.clone(),
-                    );
-                    let p_w_c = (word_count + 1.0) / (total_words + (vocab_size as f32));
-
-                    //println!("word: {} ,Count: {},total word {} prob{}",k.get_value(),word_count,total_words,p_w_c);
-                    temp_map.insert(k.clone(), TF32::new(p_w_c, k.get_degree()));
-                }
-
-                prob_w_c.insert(j.clone(), temp_map);
             }
             None => print!("Failed to get data points"),
         }
     }
+   let prob_w_c = calculate_word_probabilities(vocab.clone(), vocab_size, class_total_words.clone());
     //P(w∣C)= WordCount[C][w]+1/TotalWords[C]+Vocabulary size ;
-    return (class_probabilities, prob_w_c, vocab);
+    return (class_probabilities, prob_w_c, vocab, class_total_words);
 }
 
 pub fn read_data(training: String, class_label: TString) -> Ttable {
@@ -129,6 +105,7 @@ pub fn model_testing(
     trained_model: (
         HashMap<TString, TF32>,
         HashMap<TString, HashMap<TString, TF32>>,
+        HashMap<TString, HashMap<TString, i32>>,
         HashMap<TString, i32>,
     ),
     document_label: TString,
@@ -146,7 +123,7 @@ pub fn model_testing(
         Some(doc) => {
             match doc {
                 RDataType::String(doc) => {
-                    if doc.get_degree() == degrees[1].clone(){
+                    if doc.get_degree() == degrees[1].clone() {
                         println!("Degree of the document is false.");
                         return;
                     }
@@ -171,32 +148,38 @@ pub fn model_testing(
 
     let prior_probabilities: HashMap<TString, TF32> = trained_model.0;
     let class_labels: Vec<&TString> = prior_probabilities.keys().collect();
-    let p_w_c = trained_model.1;
-    let vocab = trained_model.2;
+    let mut p_w_c = trained_model.1;
+    let mut vocab = trained_model.2;
+    let total_words_in_class = trained_model.3;
     let mut probabilities = HashMap::<TString, TF32>::new();
+    let mut vocab_size = 0 as i32;
+    let (require_retraining, new_vocab, new_total_words_in_class) = check_unseen_words(
+        doc_words.clone(),
+        vocab.clone(),
+        total_words_in_class,
+        class_labels.clone(),
+    );
+    if require_retraining {
+        // Retrain model
+        for (_k, val) in vocab.iter() {
+            for (_k1, v) in val {
+                vocab_size += v;
+            }
+        }
+        p_w_c = calculate_word_probabilities(new_vocab.clone(), vocab_size, new_total_words_in_class.clone());
+        vocab = new_vocab;
+    }
     for c in class_labels.clone() {
-        // if c.get_degree() != true_check {
-        //     continue;
-        // }
-
         //Since multiplying many small probabilities can lead to underflow (very small numbers that are difficult to represent accurately), we use logarithms
         let mut c_prob = prior_probabilities
             .get(c)
             .expect("Value should not be none");
         //let mut log_prob = c_prob.ln();
 
-        let class_probabilities = p_w_c.get(c).expect("Word probabilities of certain class not found");
+        let class_probabilities = p_w_c
+            .get(c)
+            .expect("Word probabilities of certain class not found");
 
-      //  let mut temp_word_prob = HashMap::<TString, TF32>::new();
-
-        // match class_probabilities {
-        //     Some(class_probabilities) => {
-        //         for (k, v) in class_probabilities {
-        //             temp_word_prob.insert(k.clone(), *v);
-        //         }
-        //     }
-        //     None => println!("Failed to get word probabilities while testing"),
-        // }
         let mut t = TF32::default();
         for word in doc_words.clone() {
             if vocab.contains_key(&word) {
@@ -210,40 +193,11 @@ pub fn model_testing(
                         //println!("prob: {}",temp);
                     }
                     None => {
-                            println!("Word probability cant be calculated while testing: ");
-                            word.t_print();
-                    },
-                }
-            }
-            else {
-                let labels = get_class_labels_without_degree(class_labels.clone());
-                println!("Following word does not exist in the vocabulary, please assign one of the following labels to it: ");
-                word.t_print();
-                println!("Labels: ");
-                for (i,name) in labels.iter().enumerate() {
-                    println!("{}: {}", i, name);
-                }
-                let mut input = String::new();
-                let mut number: i32 = 0;
-               loop {
-                stdin().read_line(&mut input).expect("Failed to read line");
-                input = input.trim().to_string();
-
-                if let Ok(parsed_number) = input.parse::<i32>() {
-                    number = parsed_number;
-                    if number < 0 || number >= (labels.len() as i32){
-                        println!("Invalid input. Please enter the number in range");
+                        println!("Word probability cant be calculated while testing: ");
+                        word.t_print();
                     }
-                    else{
-                        break;
-                    }
-                } else {
-                    println!("Invalid input. Please enter an integer.");
-                    input.clear();
                 }
-
-               }
-            }
+            } 
         }
         probabilities.insert(c.clone(), c_prob.clone());
     }
