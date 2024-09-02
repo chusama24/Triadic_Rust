@@ -141,8 +141,8 @@ fn comparison(){
 #[test]
 fn compare_string(){
   let a = TString::new("hello".to_owned(), Triadic::default());
-  let b = TString::new("hellod".to_owned(), Triadic::new('l'.enum_convert()));
-if a == b{
+  let b = TString::new("hello".to_owned(), Triadic::new('l'.enum_convert()));
+if &a == &b{
   println!("True");
 }
 else{

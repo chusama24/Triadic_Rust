@@ -195,7 +195,13 @@ RDataType::Integer(TI32::default());
                         let d = w.split(' ');
                         // "T" , "val"
                         for (_k,w2) in d.enumerate(){
-                            temp_deg = w2.to_string().trim().parse().expect("Expected a character");
+                            let temp: Result<char, _> = w2.to_string().trim().parse();
+                            if let Ok(val) = temp {
+                                temp_deg = val;
+                            }
+                            else {
+                                temp_deg = 'L';
+                            }
                             break;
                         }
                     }
