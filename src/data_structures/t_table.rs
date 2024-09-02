@@ -227,7 +227,11 @@ RDataType::Integer(TI32::default());
                         temp = convert_input(r.to_string());
                     }
                         else {
-                            let deg: char = r.to_string().trim().parse().expect("Expected a character");
+                            let mut deg = 'L';
+                            let t_deg: Result<char, _> = r.to_string().trim().parse();
+                            if let Ok(val) = t_deg {
+                                deg = val;
+                            }
                             let d = Triadic::new(deg.enum_convert());
                             let index: i32 = (i-1)/2;
                             let attr = table.get_header(index);
