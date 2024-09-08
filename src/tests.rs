@@ -2,6 +2,7 @@
 use crate::data_structures::t_array::TArray;
 use crate::data_structures::t_row::{RDataType, TRow};
 use crate::data_structures::t_table::Ttable;
+use crate::data_types::t_char::TChar;
 use crate::data_types::t_f32::TF32;
 use crate::data_types::t_i32::TI32;
 use crate::data_types::t_i8::TI8;
@@ -10,7 +11,7 @@ use crate::data_types::triadic::Triadic;
 use crate::t_enum::{ConvertToDegree, Degree::{self, *}};
 use crate::t_print::Print;
 use crate::operators::triadic_op::*;
-use crate::type_cast::convertto_i32;
+use crate::type_cast::{convertto_i32, convertto_string};
 
 
 /*
@@ -140,13 +141,10 @@ fn comparison(){
 
 #[test]
 fn compare_string(){
-  let a = TString::new("hello".to_owned(), Triadic::default());
-  let b = TString::new("hello".to_owned(), Triadic::new('l'.enum_convert()));
-if &a == &b{
-  println!("True");
-}
-else{
-  println!("False");
-}
+ let temp = " ".to_string();
+ let t = temp.trim();
+ if t.is_empty() {
+  println!("EMpty");
+ }
 }
 

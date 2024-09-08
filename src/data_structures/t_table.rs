@@ -258,6 +258,10 @@ RDataType::Integer(TI32::default());
 }
 
 pub fn convert_input(input: String)-> RDataType {
+    let temp = input.trim();
+    if temp.is_empty(){
+        return RDataType::Empty;
+    }
     match i32::from_str(&input){
         Ok(num) => {
            return RDataType::Integer(TI32::new(num, Triadic::default()))
