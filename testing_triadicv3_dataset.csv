@@ -1,6 +1,6 @@
 Class/T val,Class/T deg,Sentence/T val,Sentence/T deg
-Negative,T,I am so sad.,T
-Negative,F,I am so sad.,L
+Negative,T,,T
+Negative,F,,
 Negative,L,I am so sad.,T
 Negative,L,I am so sad.,F
 Positive,L,This is enjoyable.,T
