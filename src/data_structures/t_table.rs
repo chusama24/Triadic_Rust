@@ -229,9 +229,26 @@ RDataType::Integer(TI32::default());
                         else {
                             let mut deg = 'L';
                             let t_deg: Result<char, _> = r.to_string().trim().parse();
-                            if let Ok(val) = t_deg {
+                            match t_deg {
+                                Ok(val) => {
+                                    // Degree exists
                                 deg = val;
-                            }
+                                },
+                                Err(_err) => {
+                                    match temp {
+                                        RDataType::Empty => {
+                                            // Value and degree both are missing
+                                            let index: i32 = (i-1)/2;
+                                            let attr = table.get_header(index);
+                                            row.insert(&attr, &temp);
+                                            continue;
+                                        }, 
+                                        _ => {
+                                            // Value exists but degree is missing
+                                        }
+                                    }
+                                },
+                            } 
                             let d = Triadic::new(deg.enum_convert());
                             let index: i32 = (i-1)/2;
                             let attr = table.get_header(index);
@@ -240,6 +257,9 @@ RDataType::Integer(TI32::default());
                                 RDataType::Float(mut v) => v.set_degree(d),
                                 RDataType::Integer(mut v) => v.set_degree(d),
                                 RDataType::String(ref mut v) => v.set_degree(d),
+                                RDataType::Empty => {
+                                    temp = RDataType::String(TString::new("".to_string(), d));
+                                }
                                 _ => println!("Error"),
                             }
                             row.insert(&attr, &temp);
