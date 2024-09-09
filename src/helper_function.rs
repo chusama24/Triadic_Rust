@@ -1,10 +1,7 @@
 use std::{collections::HashMap, io::stdin};
 
 use triadic_rust::{
-    data_structures::{t_row::RDataType, t_table::Ttable},
-    data_types::{t_f32::TF32, t_string::TString, triadic::Triadic, triadic_type::Ttypes},
-    t_enum::Degree,
-    t_print::Print,
+    data_structures::{t_row::RDataType, t_table::Ttable}, data_types::{t_f32::TF32, t_string::TString, triadic::Triadic, triadic_type::Ttypes}, operators::triadic_op::TriadicArithmeticOp, t_enum::Degree, t_print::Print
 };
 
 pub fn get_data_points(data: Vec<RDataType>, key: TString) -> Vec<i32> {
@@ -74,7 +71,7 @@ pub fn get_vocab(
 
     let class_col = data.get_column_by_name(&class_label);
     let class_labels = convert_rdatatype_to_string(class_col);
-
+    let labels =get_class_labels(class_labels.clone());
     for (j, i) in col.iter().enumerate() {
         let label = &class_labels[j];
         match i {
@@ -90,7 +87,15 @@ pub fn get_vocab(
                     }
                     if cleaned_text.len() > 0 {
                         let temp = TString::new(cleaned_text.to_lowercase(), line.get_degree());
-                        words_count = insert_word_in_vocab(words_count, &temp, label);
+                        words_count = insert_word_in_vocab(words_count, &temp, label,1);
+                        for j in labels.iter(){
+                            if label == j{
+                                continue;
+                            }
+
+                            words_count = insert_word_in_vocab(words_count, &temp, j,0);
+                            
+                        }
                     }
                     //println!("{}",cleaned_text);
                     if total_words_in_class.contains_key(&label) {
@@ -177,11 +182,11 @@ pub fn get_total_of_document_in_degree(class_col: Vec<RDataType>, deg: Triadic) 
     count
 }
 
-pub fn get_class_labels_without_degree(class_labels: Vec<&TString>) -> Vec<String> {
-    let mut labels = Vec::<String>::new();
+pub fn get_class_labels(class_labels: Vec<TString>) -> Vec<TString> {
+    let mut labels = Vec::<TString>::new();
     for cl in class_labels.iter() {
-        if !labels.contains(&cl.get_value()) {
-            labels.push(cl.get_value());
+        if !labels.contains(cl) {
+            labels.push(cl.clone());
         }
     }
     labels
@@ -244,7 +249,6 @@ pub fn check_unseen_words(
     for word in doc_words.iter() {
         if !check_word_in_vocab(&vocab, word) {
             require_retraining = true;
-            // let labels = get_class_labels_without_degree(class_labels.clone());
             println!("Following word does not exist in the vocabulary, please assign one of the following labels to it: ");
             word.t_print();
             println!("Labels: ");
@@ -261,13 +265,21 @@ pub fn check_unseen_words(
                     if parsed_number < 0 || parsed_number >= (class_labels.len() as i32) {
                         println!("Invalid input. Please enter the number in range");
                     } else {
-                        let label =class_labels[parsed_number as usize]; 
+                        let label =class_labels[parsed_number as usize].clone(); 
                         let temp = total_words_in_class
-                            .get_mut(label)
+                            .get_mut(&label)
                             .expect("Class count should exist in total_words_in_class");
                         *temp += 1;
-                      vocab = insert_word_in_vocab(vocab, &word, label);
+                      vocab = insert_word_in_vocab(vocab, &word, &label,1);
 
+                      for j in class_labels.clone(){
+                        if label.clone() == j.clone(){
+                            continue;
+                        }
+
+                        vocab = insert_word_in_vocab(vocab, &word, j,0);
+                        
+                    }
                         break;
                     }
                 } else {
@@ -280,7 +292,7 @@ pub fn check_unseen_words(
     (require_retraining, vocab, total_words_in_class)
 }
 
-pub fn insert_word_in_vocab<'a>(mut vocab: HashMap<TString, HashMap<TString, i32>>, word: &'a TString, label: &'a TString) ->  HashMap<TString, HashMap<TString, i32>>{
+pub fn insert_word_in_vocab<'a>(mut vocab: HashMap<TString, HashMap<TString, i32>>, word: &'a TString, label: &'a TString,count:i32) ->  HashMap<TString, HashMap<TString, i32>>{
 
     let wc = vocab.get_mut(label);
     match wc {
@@ -288,16 +300,16 @@ pub fn insert_word_in_vocab<'a>(mut vocab: HashMap<TString, HashMap<TString, i32
             let val = temp_map.get_mut(&word);
             match val {
                 Some(val) => {
-                    *val += 1;
+                    *val += count;
                 }
                 None => {
-                    temp_map.insert(word.clone(), 1);
+                    temp_map.insert(word.clone(), count);
                 }
             }
         }
         None => {
             let mut new_map = HashMap::<TString, i32>::new();
-            new_map.insert(word.clone(), 1);
+            new_map.insert(word.clone(), count);
             vocab.insert(label.clone(), new_map);
         }
     }
@@ -327,4 +339,55 @@ pub fn calculate_word_probabilities(
         //println!("word: {} ,Count: {},total word {} prob{}",k.get_value(),word_count,total_words,p_w_c);
     }
     prob_w_c
+}
+
+pub fn calculate_prob(prob: &HashMap<TString,TF32>,doc_words:Vec<TString>,vocab:HashMap<TString, HashMap<TString, i32>>,mut c_prob:TF32) -> TF32{
+    
+    for word in doc_words.clone() {
+            
+        if check_word_in_vocab(&vocab,&word)  {
+            let temp = prob.get(&word);
+            match temp {
+                Some(temp) => {
+                    // println!("Temp val: {}",temp.get_value());
+                    // println!("C_prob: {}",c_prob.get_value());
+                    let mut val=temp.clone();
+                    let temp_log=val.get_value().ln();
+                    val.set_value(temp_log);
+                   c_prob=c_prob.tplus_1(val);
+
+                    
+                }
+                None => {
+                    println!("Word probability cant be calculated while testing.");
+                }
+            }
+        } 
+    }
+    return c_prob;
+}
+
+pub fn print_prob(p_w_c:HashMap<TString, HashMap<TString, TF32>>) {
+    for (class,_word) in p_w_c{
+        println!("Class: ");
+        class.t_print();
+        for (k,v) in _word{
+            println!("word:");
+            k.t_print();
+            println!("Probability:{}",v.get_value());
+            
+        }
+        println!("----------------------------------");
+    }
+}
+
+pub fn print_specific_word(p_w_c:HashMap<TString, HashMap<TString, TF32>>,word: &TString){
+    println!("Word:");
+    word.t_print();
+    for (class,word_prob) in p_w_c{
+        println!("Class: ");
+        class.t_print();
+        let find_word = word_prob.get(word).expect("Word probability not found ");
+        println!("Prob: {}",find_word.get_value());
+    }
 }

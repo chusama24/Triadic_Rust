@@ -1,6 +1,6 @@
 Class/T val,Class/T deg,Sentence/T val,Sentence/T deg
+Negative,T,This    is            terrible                      love     .,T
 Negative,T,I hate this.,T
-Negative,T,This is terrible hate hate it love it.,T
 Positive,T,I love it!,T
 Negative,T,This is terrible.,T
 Negative,T,I hate this place.,T

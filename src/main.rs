@@ -7,9 +7,8 @@ use triadic_rust::{
         t_table::Ttable,
     },
     data_types::{t_f32::TF32, t_string::TString, triadic::Triadic, triadic_type::Ttypes},
-    operators::triadic_op::TriadicArithmeticOp,
     t_enum::Degree,
-    t_print::Print,
+    t_print::Print, type_cast::convertto_string,
 };
 
 pub fn model_traning(
@@ -42,6 +41,13 @@ pub fn model_traning(
             RDataType::String(c) => {
                 if labels.contains(&c) != true {
                     labels.push(c.clone());
+                }
+            }
+            RDataType::Char(c) => {
+                let temp= convertto_string(c.clone());
+                if labels.contains(&temp) != true {
+
+                    labels.push(temp.clone());
                 }
             }
             _ => print!("Label value other than string"),
@@ -102,14 +108,17 @@ pub fn read_data(training: String, class_label: TString) -> Ttable {
 
 pub fn model_testing(
     data: TRow,
-    trained_model: (
+    mut trained_model: (
         HashMap<TString, TF32>,
         HashMap<TString, HashMap<TString, TF32>>,
         HashMap<TString, HashMap<TString, i32>>,
         HashMap<TString, i32>,
     ),
     document_label: TString,
-) {
+) -> Result<(TString,(HashMap<TString, TF32>,
+    HashMap<TString, HashMap<TString, TF32>>,
+    HashMap<TString, HashMap<TString, i32>>,
+    HashMap<TString, i32>)),String> {
     let doc = data.get_value(&document_label);
     let stop_words = stop_words::get(stop_words::LANGUAGE::English);
     let mut doc_words = Vec::<TString>::new();
@@ -124,33 +133,39 @@ pub fn model_testing(
             match doc {
                 RDataType::String(doc) => {
                     if doc.get_degree() == degrees[1].clone() {
-                        println!("Degree of the document is false.");
-                        return;
+                        return Err("Degree of the document is false.".to_string());
                     }
                     let str = doc.get_value();
+                    print!("Doc value {}",str);
+                    if str==""{
+                        return Err("Doc value was empty".to_string());
+                    }
                     //print!("{} ",str);
                     let words: Vec<&str> = str.split_whitespace().collect();
                     for w in words {
                         let w_store = w.to_lowercase();
                         let cleaned_text = remove_non_alphanumeric(&w_store);
-                        if stop_words.contains(&cleaned_text) {
+                        if stop_words.contains(&cleaned_text) || cleaned_text.len()==0 {
                             continue;
                         }
                         let temp = TString::new(cleaned_text, doc.get_degree());
                         doc_words.push(temp);
                     }
+                },
+                RDataType::Empty => {
+                    return Err("Document value not found.".to_string());
                 }
                 _ => println!("Doc value is not string"),
             }
         }
-        None => println!("Model testing: Doc value is empty"),
+        None => {return Err("Document not found".to_string());}
     }
 
-    let prior_probabilities: HashMap<TString, TF32> = trained_model.0;
+    let prior_probabilities: HashMap<TString, TF32> = trained_model.0.clone();
     let class_labels: Vec<&TString> = prior_probabilities.keys().collect();
-    let mut p_w_c = trained_model.1;
-    let mut vocab = trained_model.2;
-    let total_words_in_class = trained_model.3;
+    let mut p_w_c: HashMap<TString, HashMap<TString, TF32>> = trained_model.1.clone();
+    let mut vocab = trained_model.2.clone();
+    let total_words_in_class = trained_model.3.clone();
     let mut probabilities = HashMap::<TString, TF32>::new();
     let mut vocab_size = 0 as i32;
     let (require_retraining, new_vocab, new_total_words_in_class) = check_unseen_words(
@@ -165,61 +180,51 @@ pub fn model_testing(
             for (_k1, v) in val {
                 vocab_size += v;
             }
+            
         }
         p_w_c = calculate_word_probabilities(new_vocab.clone(), vocab_size, new_total_words_in_class.clone());
+       
         vocab = new_vocab;
+        trained_model.1=p_w_c.clone();
+        trained_model.2 = vocab.clone();
+        trained_model.3=new_total_words_in_class;
     }
     for c in class_labels.clone() {
-        //Since multiplying many small probabilities can lead to underflow (very small numbers that are difficult to represent accurately), we use logarithms
         let mut c_prob = prior_probabilities
             .get(c)
-            .expect("Value should not be none");
-        //let mut log_prob = c_prob.ln();
+            .expect("Value should not be none").clone();
+        let val=c_prob.get_value();
+        let log_prob = val.ln();
+        c_prob.set_value(log_prob);
 
-        let class_probabilities = p_w_c
-            .get(c)
-            .expect("Word probabilities of certain class not found");
+        let class_probabilities = p_w_c.get(c);
 
-        let mut t = TF32::default();
-        for word in doc_words.clone() {
-            if vocab.contains_key(&word) {
-                let temp = class_probabilities.get(&word);
-                match temp {
-                    Some(temp) => {
-                        t = c_prob.tmul_1(temp.clone());
-                        c_prob = &t;
-                        //println!("word:");
-                        //word.t_print();
-                        //println!("prob: {}",temp);
-                    }
-                    None => {
-                        println!("Word probability cant be calculated while testing: ");
-                        word.t_print();
-                    }
-                }
-            } 
-        }
-        probabilities.insert(c.clone(), c_prob.clone());
+        match class_probabilities {
+            Some(prob) =>{
+                let prob= calculate_prob(prob,doc_words.clone(),vocab.clone(),c_prob);
+                // println!("Prob:");
+                // prob.t_print();
+                probabilities.insert(c.clone(), prob);
+            },
+            None => return Err("Class probabilities cant be found".to_string()),
+        } 
     }
 
-    let mut max = 0.0 as f32;
+    let mut max =f32::MIN;
     let mut selected_class = TString::default();
-    //println!("Class probabilities:");
     for (k, v) in probabilities.iter() {
-        //k.t_print();
-        //println!("{} {}",k.get_value(),v);
+        // println!("class name");
+        // k.t_print();
+        // println!("probabilities val ");
+        // v.t_print();
+        
         if v.get_value() > max {
             max = v.get_value();
-            //println!("max value: {}",max);
             selected_class = k.clone();
-            //println!("value of k: {}",k.get_value());
-
-            //println!("CLass: ");
-            //selected_class.t_print();
         }
     }
-    print! {"Selected class: "};
-    selected_class.t_print();
+
+    return Ok((selected_class,trained_model));
 }
 fn main() {
     let training: String = "training_triadicv3_dataset.csv".to_owned();
@@ -228,18 +233,45 @@ fn main() {
 
     let data = read_data(training, class_label.clone());
 
-    let trained_model = model_traning(&data, class_label.clone(), document_label.clone());
+    let mut trained_model = model_traning(&data, class_label.clone(), document_label.clone());
 
     let testing: String = "testing_triadicv3_dataset.csv".to_owned();
     let testing_data = read_data(testing, class_label.clone());
 
     let size = testing_data.get_size();
+    if size==0{
+        println!("File is empty");
+    }
+    // let prior_prob = trained_model.0.clone();
+    // for (k,v) in prior_prob{
+    //     println!("class:");
+    //     k.t_print();
+    //     println!("prob:{} ",v.get_value());
+    // }
+    // let word =TString::new("sad".to_string(),Triadic::new(Degree::T) );
+    // print_specific_word(trained_model.1.clone(),&word);
     for i in 0..size {
-        model_testing(
+        let result= model_testing(
             testing_data.get_row(i as i32),
             trained_model.clone(),
             document_label.clone(),
         );
-        break;
+        
+        println!("Row number: {}",i);
+        match result {
+            Ok(result) => {
+                let selected_class = result.0;
+                trained_model=result.1;
+                println!("Selected class: ");
+                selected_class.t_print();
+                //print_prob(trained_model.1.clone());
+
+            },
+            Err(str) => {
+                println!("{}",str);
+            },
+        }
+
+       //break;
     }
 }
