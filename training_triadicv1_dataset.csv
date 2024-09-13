@@ -1,0 +1,15 @@
+Class/T val,Class/T deg,Sentence/T val,Sentence/T deg
+Positive,T,I had a great time.,T
+Positive,T,This is amazing!,T
+Negative,T,I hate this.,T
+Negative,T,I am so sad.,T
+Positive,T,This is enjoyable.,T
+Negative,T,This is awful.,T
+Positive,T,I am happy.,T
+Negative,T,I hate this place.,T
+Positive,T,This is fantastic!,T
+Negative,T,I am so sad.,T
+Positive,T,I love this place.,T
+Positive,T,I am happy.,T
+Negative,T,I am so sad.,T
+Negative,T,This is terrible.,T
