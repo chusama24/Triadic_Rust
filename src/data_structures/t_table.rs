@@ -155,7 +155,7 @@ RDataType::Integer(TI32::default());
         return "None".to_string();
     }
 
-   pub fn read_data(file_path: String, class_label: TString) -> Result<Ttable, std::io::Error>{
+   pub fn read_data(file_path: String) -> Result<Ttable, std::io::Error>{
         // Open the file
         let f: File;
         match File::open(file_path) {
@@ -260,7 +260,6 @@ RDataType::Integer(TI32::default());
                                 RDataType::Empty => {
                                     temp = RDataType::String(TString::new("".to_string(), d));
                                 }
-                                _ => println!("Error"),
                             }
                             row.insert(&attr, &temp);
                     }
