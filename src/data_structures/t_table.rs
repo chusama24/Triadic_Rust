@@ -155,6 +155,29 @@ RDataType::Integer(TI32::default());
         return "None".to_string();
     }
 
+    pub fn get_column_type_by_name(&self, attr: TString) -> String {
+        let mut i = 0;
+        loop {
+            if i >= self.data.len(){
+                break;
+            }
+            let val =  self.data[i].get_value(&attr);
+            if let Some(v) = val {
+                match v {
+                    RDataType::Char(_c) => return "char".to_string(),
+                    RDataType::Float(_c) => return "float".to_string(),
+                    RDataType::Integer(_c) => return "integer".to_string(),
+                    RDataType::String(_c) => return "string".to_string(),
+                    _ => return "None".to_string()
+                }
+            }
+            else {
+                i += 1;
+            }
+        }
+        return "None".to_string();
+    }
+
    pub fn read_data(file_path: String) -> Result<Ttable, std::io::Error>{
         // Open the file
         let f: File;
