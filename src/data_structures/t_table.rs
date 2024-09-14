@@ -155,7 +155,7 @@ RDataType::Integer(TI32::default());
         return "None".to_string();
     }
 
-    pub fn get_column_type_by_name(&self, attr: TString) -> String {
+    pub fn get_column_type_by_name(&self, attr: &TString) -> String {
         let mut i = 0;
         loop {
             if i >= self.data.len(){
