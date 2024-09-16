@@ -141,9 +141,8 @@ fn comparison(){
 
 #[test]
 fn compare_string(){
- let temp = " ".to_string();
- let t = temp.trim();
- if t.is_empty() {
+ let temp = TString::default();
+ if temp == TString::default(){
   println!("EMpty");
  }
 }

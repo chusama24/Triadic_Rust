@@ -50,3 +50,11 @@
         }
     }
 
+    pub fn get_char_from_enum(d: Degree) -> char {
+        match d {
+            Degree::T => 'T',
+            Degree::F =>'F',
+            Degree::L => 'L',
+        }
+    }
+
