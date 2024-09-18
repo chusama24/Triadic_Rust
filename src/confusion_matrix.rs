@@ -193,7 +193,7 @@ pub fn calculate_recall(cm: Vec<Vec<i32>>) -> f32 {
 pub fn print_confusion_matrix(cm: &Vec<Vec<i32>>,labels:Vec<String>) {
     print!("A/P ");
     for l in labels.iter(){
-        print!("{}/T {}/L",l,l);
+        print!("{}/T {}/L ",l,l);
     }
     println!("");
 
