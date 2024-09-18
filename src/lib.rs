@@ -21,6 +21,7 @@ pub mod t_enum;
 pub mod t_print;
 pub mod t_scan;
 pub mod type_cast;
+pub mod confusion_matrix;
 pub mod data_types{
     pub mod triadic_type;
     pub mod t_i8;

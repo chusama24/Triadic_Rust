@@ -49,6 +49,8 @@ impl<T: Ttypes + Clone> TArray<T>{
             self.t_vector.len()
     }
 
+   
+
 }
 
 impl<T: Ttypes + Clone> Default for TArray<T>{
