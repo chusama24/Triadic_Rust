@@ -163,6 +163,9 @@ pub fn calculate_accuracy(cm: Vec<Vec<i32>>) -> f32 {
     }
 
     let a = numerator / denominator;
+    if denominator==0.0{
+        return 0.0;
+    }
     a
 }
 
@@ -174,6 +177,9 @@ pub fn calculate_precision(cm: Vec<Vec<i32>>) -> f32 {
     }
 
     let p = numerator / denominator;
+    if denominator==0.0{
+        return 0.0;
+    }
     p
 }
 
@@ -187,6 +193,9 @@ pub fn calculate_recall(cm: Vec<Vec<i32>>) -> f32 {
     }
 
     let r = numerator / denominator;
+    if denominator==0.0{
+        return 0.0;
+    }
     r
 }
 
