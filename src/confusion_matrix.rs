@@ -7,7 +7,7 @@ pub fn create_confusion_matrix(
     predicted: &TArray<TString>,
 ) -> Vec<Vec<i32>> {
     let mut keys = Vec::<String>::new();
-    println!("Keys: ");
+    //println!("Keys: ");
 
     for r in actual.iter() {
         match r {
@@ -15,7 +15,7 @@ pub fn create_confusion_matrix(
                 if keys.contains(&v.get_value()) {
                     continue;
                 }
-                println!("{}", v.get_value());
+                //println!("{}", v.get_value());
                 keys.push(v.get_value());
             }
             _ => {
@@ -143,7 +143,7 @@ pub fn resolve_limit(
             
         }
     }
-    println!("limit count: {}",count);
+    //println!("limit count: {}",count);
     predicted.set_vector(predict.clone());
   
     return create_confusion_matrix(&actual, &predicted);
