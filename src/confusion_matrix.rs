@@ -72,7 +72,10 @@ pub fn create_confusion_matrix(
                     },
                     None => -1 as i32,
                 };
-
+                if i1 == -1 || i2 == -1 {
+                    i += 1;
+                    continue;
+                }
                 let mut deg_index= match ar_deg.get_value() {
                     Degree::T => {
                         0
