@@ -5,9 +5,9 @@ use crate::{data_structures::{t_array::TArray, t_row::RDataType}, data_types::{t
 pub fn create_confusion_matrix(
     actual: &Vec<RDataType>,
     predicted: &TArray<TString>,
-) -> Vec<Vec<i32>> {
+) -> (Vec<Vec<i32>>, Vec<String>) {
     let mut keys = Vec::<String>::new();
-    //println!("Keys: ");
+    println!("Keys: ");
 
     for r in actual.iter() {
         match r {
@@ -15,7 +15,7 @@ pub fn create_confusion_matrix(
                 if keys.contains(&v.get_value()) {
                     continue;
                 }
-                //println!("{}", v.get_value());
+                println!("{}", v.get_value());
                 keys.push(v.get_value());
             }
             _ => {
@@ -108,14 +108,14 @@ pub fn create_confusion_matrix(
             }
         }
     }
-    cm 
+    (cm, keys) 
 }
 
 pub fn resolve_limit(
     mut actual: Vec<RDataType>,
     mut predicted: TArray<TString>,
     d: char,
-) -> Vec<Vec<i32>> {
+) -> (Vec<Vec<i32>>, Vec<String>) {
     let mut count =0;
     let deg = Triadic::new(d.enum_convert());
     let size = actual.len();
