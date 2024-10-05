@@ -23,10 +23,6 @@ pub fn create_confusion_matrix(
             }
         }
     }
-
-    keys.sort();
-    keys.reverse();
-
     let size=keys.len()*2;
     let mut cm: Vec<Vec<i32>> = Vec::with_capacity(size);
     for _ in 0..size {
