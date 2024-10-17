@@ -150,7 +150,7 @@ pub fn resolve_limit(
     d: char,
     percentage: f32,
 ) -> Result<(Vec<Vec<i32>>, Vec<String>), String> {
-    if d != 't' && d != 'f' {
+    if d.to_ascii_lowercase() != 't' && d.to_ascii_lowercase() != 'f' {
         return Err("Selected degree is not acceptable.".to_string());
     }
     let mut count = 0;
