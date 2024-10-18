@@ -184,10 +184,12 @@ pub fn resolve_limit(
         }
     }
     let total = actual_count.len() + predicted_count.len();
+    println!("Total: {}",total);
     limit_index.insert("Actual".to_string(), actual_count);
     limit_index.insert("Predicted".to_string(), predicted_count);
 
     let required_count = (total as f32 * percentage).ceil();
+    println!("required_count: {}",required_count);
 
     let indices = get_indices(required_count as i32, limit_index);
     match indices.get("Actual") {
