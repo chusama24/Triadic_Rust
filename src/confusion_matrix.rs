@@ -209,6 +209,8 @@ pub fn resolve_limit(
             predicted_count = Vec::new();
         }
     }
+    println!("Actual count {}",actual_count.len());
+    println!("Predicted count {}",predicted_count.len());
 
     for i in 0..size {
         match actual[i].clone() {
