@@ -153,16 +153,18 @@ pub fn resolve_limit(
     if d.to_ascii_lowercase() != 't' && d.to_ascii_lowercase() != 'f' {
         return Err("Selected degree is not acceptable.".to_string());
     }
-    let mut count = 0;
+   // let mut count = 0;
     let deg = Triadic::new(d.enum_convert());
     let deg2 = match d.to_ascii_lowercase() {
         't' => Triadic::new('f'.enum_convert()),
         'f' => Triadic::new('t'.enum_convert()),
         _ => Triadic::new('l'.enum_convert())
     };
+
     let size = actual.len();
     let mut predict = predicted.get_value();
     let limit = Triadic::default();
+
     let mut limit_index = HashMap::<String, Vec<i32>>::new();
     let mut actual_count = Vec::<i32>::new();
     let mut predicted_count = Vec::<i32>::new();
@@ -183,8 +185,12 @@ pub fn resolve_limit(
             predicted_count.push(i as i32);
         }
     }
+
     let total = actual_count.len() + predicted_count.len();
     println!("Total: {}",total);
+    println!("Total Actual: {}", actual_count.len());
+    println!("Total Predicted: {}", predicted_count.len());
+
     limit_index.insert("Actual".to_string(), actual_count);
     limit_index.insert("Predicted".to_string(), predicted_count);
 
@@ -195,6 +201,7 @@ pub fn resolve_limit(
     match indices.get("Actual") {
         Some(a) => {
             actual_count = a.clone();
+            println!("Actual Count in Match Statement: {}", actual_count.len());
         }
         None => {
             actual_count = Vec::new();
@@ -204,6 +211,7 @@ pub fn resolve_limit(
     match indices.get("Predicted") {
         Some(a) => {
             predicted_count = a.clone();
+            println!("Predicted Count in Match Statement: {}", predicted_count.len());
         }
         None => {
             predicted_count = Vec::new();
