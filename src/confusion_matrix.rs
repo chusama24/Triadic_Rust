@@ -129,7 +129,7 @@ pub fn get_indices(
                 // Get Vector of the selected key from the hashmap
                 Some(selected_vector) => match get_random_value(&selected_vector.clone()) {
                     // Get random value from the selected vector
-                    Some((v,val_index)) => match new.get_mut(*key) {
+                    Some((v, val_index)) => match new.get_mut(*key) {
                         // Get the Vector of the selected key from the new hashmap
                         Some(vec) => {
                             // Push
@@ -207,7 +207,16 @@ pub fn resolve_limit(
     let required_count = (total as f32 * percentage).ceil();
     println!("required_count: {}", required_count);
 
-    let indices = get_indices(required_count as i32, limit_index);
+    let mut indices = HashMap::<String, Vec<i32>>::new();
+
+    if percentage == 1.0 {
+        indices = limit_index;
+    } else if percentage == 0.0 {
+        indices.insert("Actual".to_string(), Vec::new());
+        indices.insert("Predicted".to_string(), Vec::new());
+    } else {
+        indices = get_indices(required_count as i32, limit_index);
+    }
 
     match indices.get("Actual") {
         Some(a) => {
