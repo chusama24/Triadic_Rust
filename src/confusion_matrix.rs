@@ -99,20 +99,23 @@ pub fn create_confusion_matrix(
     (cm, keys)
 }
 
-fn get_random_value<T>(vector: &[T]) -> Option<&T> {
+fn get_random_value<T>(vector: &[T]) -> Option<(&T, usize)> {
     if vector.is_empty() {
         return None;
     }
 
     let index = thread_rng().gen_range(0..vector.len());
-    Some(&vector[index])
+    Some((&vector[index], index))
 }
 pub fn get_indices(
     total_count: i32,
-    limit_indices: HashMap<String, Vec<i32>>,
+    mut limit_indices: HashMap<String, Vec<i32>>,
 ) -> HashMap<String, Vec<i32>> {
     let mut new = HashMap::<String, Vec<i32>>::new();
-    let keys: Vec<&String> = limit_indices.keys().collect();
+
+    let temp_map = limit_indices.clone();
+    let keys: Vec<&String> = temp_map.keys().collect();
+
     let mut count = 0;
 
     loop {
@@ -121,18 +124,25 @@ pub fn get_indices(
         }
 
         match get_random_value(&keys) {
-            Some(key) => match limit_indices.get(*key) {
-                Some(val) => match get_random_value(val) {
-                    Some(v) => match new.get_mut(*key) {
+            // Key Selected : Predicted or Actual
+            Some((key, _index)) => match limit_indices.get_mut(*key) {
+                // Get Vector of the selected key from the hashmap
+                Some(selected_vector) => match get_random_value(&selected_vector.clone()) {
+                    // Get random value from the selected vector
+                    Some((v,val_index)) => match new.get_mut(*key) {
+                        // Get the Vector of the selected key from the new hashmap
                         Some(vec) => {
+                            // Push
                             vec.push(*v);
                             count += 1;
+                            selected_vector.remove(val_index);
                         }
                         None => {
                             let mut n = Vec::<i32>::new();
                             n.push(*v);
                             count += 1;
                             new.insert(key.to_string(), n);
+                            selected_vector.remove(val_index);
                         }
                     },
                     None => continue,
@@ -153,12 +163,12 @@ pub fn resolve_limit(
     if d.to_ascii_lowercase() != 't' && d.to_ascii_lowercase() != 'f' {
         return Err("Selected degree is not acceptable.".to_string());
     }
-   // let mut count = 0;
+    // let mut count = 0;
     let deg = Triadic::new(d.enum_convert());
     let deg2 = match d.to_ascii_lowercase() {
         't' => Triadic::new('f'.enum_convert()),
         'f' => Triadic::new('t'.enum_convert()),
-        _ => Triadic::new('l'.enum_convert())
+        _ => Triadic::new('l'.enum_convert()),
     };
 
     let size = actual.len();
@@ -187,7 +197,7 @@ pub fn resolve_limit(
     }
 
     let total = actual_count.len() + predicted_count.len();
-    println!("Total: {}",total);
+    println!("Total: {}", total);
     println!("Total Actual: {}", actual_count.len());
     println!("Total Predicted: {}", predicted_count.len());
 
@@ -195,9 +205,10 @@ pub fn resolve_limit(
     limit_index.insert("Predicted".to_string(), predicted_count);
 
     let required_count = (total as f32 * percentage).ceil();
-    println!("required_count: {}",required_count);
+    println!("required_count: {}", required_count);
 
     let indices = get_indices(required_count as i32, limit_index);
+
     match indices.get("Actual") {
         Some(a) => {
             actual_count = a.clone();
@@ -211,14 +222,17 @@ pub fn resolve_limit(
     match indices.get("Predicted") {
         Some(a) => {
             predicted_count = a.clone();
-            println!("Predicted Count in Match Statement: {}", predicted_count.len());
+            println!(
+                "Predicted Count in Match Statement: {}",
+                predicted_count.len()
+            );
         }
         None => {
             predicted_count = Vec::new();
         }
     }
-    println!("Actual count {}",actual_count.len());
-    println!("Predicted count {}",predicted_count.len());
+    println!("Actual count {}", actual_count.len());
+    println!("Predicted count {}", predicted_count.len());
 
     for i in 0..size {
         match actual[i].clone() {
@@ -226,12 +240,11 @@ pub fn resolve_limit(
                 if a.get_degree() == limit {
                     if actual_count.contains(&(i as i32)) {
                         a.set_degree(deg.clone());
-                    }
-                    else {
+                    } else {
                         a.set_degree(deg2.clone());
                     }
                     actual[i] = RDataType::String(a);
-                } 
+                }
             }
             _ => {
                 println!("Actual value is not string");
@@ -239,10 +252,9 @@ pub fn resolve_limit(
         }
 
         if predict[i].get_degree() == limit {
-            if predicted_count.contains(&(i as i32)){
+            if predicted_count.contains(&(i as i32)) {
                 predict[i].set_degree(deg.clone());
-            }
-            else {
+            } else {
                 predict[i].set_degree(deg2.clone());
             }
             //count += 1;
