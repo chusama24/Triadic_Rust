@@ -56,7 +56,7 @@ pub fn create_confusion_matrix(
     }
 
   //  let size = keys.len() * 2;
-    let size = temp_index as usize;
+    let size = (temp_index as usize) * 2;
     let mut cm: Vec<Vec<i32>> = Vec::with_capacity(size);
     for _ in 0..size {
         cm.push(vec![0; size]);
