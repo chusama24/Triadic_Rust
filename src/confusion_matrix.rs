@@ -41,7 +41,7 @@ pub fn create_confusion_matrix(
                 },
                 None => {
                     key_map.insert(v.get_value(), temp_index);
-                    println!("{}", v.get_value());
+                  //  println!("{}", v.get_value());
                     temp_index += 1;
                 },
             },
@@ -49,6 +49,10 @@ pub fn create_confusion_matrix(
                 println!("Error");
             }
         }
+    }
+
+    for (k,v) in key_map.iter(){
+        println!("Key: {}, Value: {}", k, v);
     }
 
   //  let size = keys.len() * 2;
