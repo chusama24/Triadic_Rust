@@ -87,12 +87,12 @@ pub fn create_confusion_matrix(
               //  let index_of_pr = keys.iter().position(|word| word.eq(&pr));
 
                 let mut i1 = match key_map.get(&ar) {
-                    Some(v) => *v,
+                    Some(v) => *v * 2,
                     None => -1,
                 };
 
                 let mut i2 = match key_map.get(&pr) {
-                    Some(v) => *v,
+                    Some(v) => *v * 2,
                     None => -1,
                 };
 
