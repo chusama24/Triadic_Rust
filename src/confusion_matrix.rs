@@ -311,6 +311,8 @@ pub fn resolve_limit(
     //println!("limit count: {}",count);
     predicted.set_vector(predict.clone());
 
+    println!("Actual Size: {}, Predicted Size: {}", actual.len(), predicted.length());
+
     return Ok(create_confusion_matrix(&actual, &predicted));
 }
 
