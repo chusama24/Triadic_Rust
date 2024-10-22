@@ -77,7 +77,7 @@ pub fn create_confusion_matrix(
                 let pr_deg = x.get_degree();
                 //  println!("Actual deg: {} ",get_char_from_enum(ar_deg.get_value()));
                 //print!("Predicted deg: {}",get_char_from_enum(pr_deg.get_value()));
-                println!("CM: Counter: {} ", counter);
+              //  println!("CM: Counter: {} ", counter);
                 counter += 1;
                 if ar_deg == false_check || pr_deg == false_check {
                     i += 1;
