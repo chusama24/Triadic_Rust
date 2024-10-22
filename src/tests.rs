@@ -147,3 +147,10 @@ fn compare_string(){
  }
 }
 
+
+#[test]
+fn loop_test(){
+  for i in 0..117000 {
+    println!("{}", i);
+  }
+}

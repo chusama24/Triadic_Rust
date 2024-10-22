@@ -11,25 +11,48 @@ use rand::{thread_rng, Rng};
 pub fn create_confusion_matrix(
     actual: &Vec<RDataType>,
     predicted: &TArray<TString>,
-) -> (Vec<Vec<i32>>, Vec<String>) {
-    let mut keys = Vec::<String>::new();
+) -> (Vec<Vec<i32>>, HashMap::<String, i32>) {
+   // let mut keys = Vec::<String>::new();
+    let mut key_map = HashMap::<String, i32>::new();
     println!("Keys: ");
 
+    // for r in actual.iter() {
+    //     match r {
+    //         RDataType::String(v) => {
+    //             if keys.contains(&v.get_value()) {
+    //                 continue;
+    //             }
+    //             println!("{}", v.get_value());
+    //             keys.push(v.get_value());
+    //         }
+    //         _ => {
+    //             println!("Error");
+    //         }
+    //     }
+    // }
+
+    let mut temp_index = 0;
     for r in actual.iter() {
         match r {
-            RDataType::String(v) => {
-                if keys.contains(&v.get_value()) {
+            RDataType::String(v) => 
+            match key_map.get(&v.get_value()) {
+                Some(_val) => {
                     continue;
-                }
-                println!("{}", v.get_value());
-                keys.push(v.get_value());
-            }
+                },
+                None => {
+                    key_map.insert(v.get_value(), temp_index);
+                    println!("{}", v.get_value());
+                    temp_index += 1;
+                },
+            },
             _ => {
                 println!("Error");
             }
         }
     }
-    let size = keys.len() * 2;
+
+  //  let size = keys.len() * 2;
+    let size = temp_index as usize;
     let mut cm: Vec<Vec<i32>> = Vec::with_capacity(size);
     for _ in 0..size {
         cm.push(vec![0; size]);
@@ -48,29 +71,39 @@ pub fn create_confusion_matrix(
 
                 let pr = x.get_value();
                 let pr_deg = x.get_degree();
-               //  println!("Actual deg: {} ",get_char_from_enum(ar_deg.get_value()));
+                //  println!("Actual deg: {} ",get_char_from_enum(ar_deg.get_value()));
                 //print!("Predicted deg: {}",get_char_from_enum(pr_deg.get_value()));
-                    println!("CM: Counter: {} ", counter);
-                    counter += 1;
+                println!("CM: Counter: {} ", counter);
+                counter += 1;
                 if ar_deg == false_check || pr_deg == false_check {
                     i += 1;
                     continue;
                 }
-                let index_of_ar = keys.iter().position(|word| word.eq(&ar));
-                let index_of_pr = keys.iter().position(|word| word.eq(&pr));
+              //  let index_of_ar = keys.iter().position(|word| word.eq(&ar));
+              //  let index_of_pr = keys.iter().position(|word| word.eq(&pr));
+
+                let mut i1 = match key_map.get(&ar) {
+                    Some(v) => *v,
+                    None => -1,
+                };
+
+                let mut i2 = match key_map.get(&pr) {
+                    Some(v) => *v,
+                    None => -1,
+                };
 
                 // yes/T yes/L no/T no/L
                 //(index of key*2) + degree
 
-                let mut i1 = match index_of_ar {
-                    Some(i_ar) => (i_ar as i32) * 2,
-                    None => -1 as i32,
-                };
+                // let mut i1 = match index_of_ar {
+                //     Some(i_ar) => (i_ar as i32) * 2,
+                //     None => -1 as i32,
+                // };
 
-                let mut i2 = match index_of_pr {
-                    Some(i_pr) => (i_pr as i32) * 2,
-                    None => -1 as i32,
-                };
+                // let mut i2 = match index_of_pr {
+                //     Some(i_pr) => (i_pr as i32) * 2,
+                //     None => -1 as i32,
+                // };
                 if i1 == -1 || i2 == -1 {
                     i += 1;
                     continue;
@@ -98,7 +131,7 @@ pub fn create_confusion_matrix(
             }
         }
     }
-    (cm, keys)
+    (cm, key_map)
 }
 
 fn get_random_value<T>(vector: &[T]) -> Option<(&T, usize)> {
@@ -161,7 +194,7 @@ pub fn resolve_limit(
     mut predicted: TArray<TString>,
     d: char,
     percentage: f32,
-) -> Result<(Vec<Vec<i32>>, Vec<String>), String> {
+) -> Result<(Vec<Vec<i32>>, HashMap::<String, i32>), String> {
     if d.to_ascii_lowercase() != 't' && d.to_ascii_lowercase() != 'f' {
         return Err("Selected degree is not acceptable.".to_string());
     }
@@ -327,8 +360,12 @@ pub fn calculate_recall(cm: Vec<Vec<i32>>) -> f32 {
     r
 }
 
-pub fn print_confusion_matrix(cm: &Vec<Vec<i32>>, labels: Vec<String>) {
+pub fn print_confusion_matrix(cm: &Vec<Vec<i32>>, labels_map: HashMap::<String, i32>) {
     print!("A/P ");
+    let mut labels = Vec::<String>::new();
+    for (k,_v) in labels_map.iter(){
+        labels.push(k.clone());
+    }
     for l in labels.iter() {
         print!("{}/T {}/L ", l, l);
     }
