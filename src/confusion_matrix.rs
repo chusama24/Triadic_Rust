@@ -372,6 +372,7 @@ pub fn print_confusion_matrix(cm: &Vec<Vec<i32>>, labels_map: HashMap::<String, 
     let size = labels_map.len();
     for _i in 0..size {
         labels.push("".to_string());
+        println!("{}", _i);
     }
     for (k,v) in labels_map.iter(){
         labels.insert(*v as usize, k.clone());
