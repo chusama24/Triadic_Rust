@@ -369,8 +369,12 @@ pub fn calculate_recall(cm: Vec<Vec<i32>>) -> f32 {
 pub fn print_confusion_matrix(cm: &Vec<Vec<i32>>, labels_map: HashMap::<String, i32>) {
     print!("A/P ");
     let mut labels = Vec::<String>::new();
-    for (k,_v) in labels_map.iter(){
-        labels.push(k.clone());
+    let size = labels_map.len();
+    for _i in 0..size {
+        labels.push("".to_string());
+    }
+    for (k,v) in labels_map.iter(){
+        labels.insert(*v as usize, k.clone());
     }
     for l in labels.iter() {
         print!("{}/T {}/L ", l, l);
