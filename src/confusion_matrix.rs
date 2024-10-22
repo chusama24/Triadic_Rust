@@ -3,7 +3,7 @@ use std::collections::HashMap;
 use crate::{
     data_structures::{t_array::TArray, t_row::RDataType},
     data_types::{t_string::TString, triadic::Triadic, triadic_type::Ttypes},
-    t_enum::{ConvertToDegree, Degree},
+    t_enum::{get_char_from_enum, ConvertToDegree, Degree},
 };
 use rand::{thread_rng, Rng};
 
@@ -37,6 +37,7 @@ pub fn create_confusion_matrix(
 
     let mut i = 0;
     let false_check = Triadic::new(Degree::F);
+    let mut counter = 0;
     for r in actual.iter() {
         match r {
             RDataType::String(r) => {
@@ -47,9 +48,10 @@ pub fn create_confusion_matrix(
 
                 let pr = x.get_value();
                 let pr_deg = x.get_degree();
-                // println!("Actual deg: {} ",get_char_from_enum(ar_deg.get_value()));
+               //  println!("Actual deg: {} ",get_char_from_enum(ar_deg.get_value()));
                 //print!("Predicted deg: {}",get_char_from_enum(pr_deg.get_value()));
-
+                    println!("CM: Counter: {} ", counter);
+                    counter += 1;
                 if ar_deg == false_check || pr_deg == false_check {
                     i += 1;
                     continue;
