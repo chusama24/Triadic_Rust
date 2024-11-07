@@ -283,9 +283,9 @@ RDataType::Integer(TI32::default());
                             let index: i32 = (i-1)/2;
                             let attr = table.get_header(index);
                             match temp {
-                                RDataType::Char(mut v) => v.set_degree(d),
-                                RDataType::Float(mut v) => v.set_degree(d),
-                                RDataType::Integer(mut v) => v.set_degree(d),
+                                RDataType::Char(ref mut v) => v.set_degree(d),
+                                RDataType::Float(ref mut v) => v.set_degree(d),
+                                RDataType::Integer(ref mut v) => v.set_degree(d),
                                 RDataType::String(ref mut v) => v.set_degree(d),
                                 RDataType::Empty => {
                                     temp = RDataType::String(TString::new("".to_string(), d));
