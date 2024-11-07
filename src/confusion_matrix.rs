@@ -3,7 +3,7 @@ use std::collections::HashMap;
 use crate::{
     data_structures::{t_array::TArray, t_row::RDataType},
     data_types::{t_string::TString, triadic::Triadic, triadic_type::Ttypes},
-    t_enum::{get_char_from_enum, ConvertToDegree, Degree},
+    t_enum::{get_char_from_enum, ConvertToDegree, Degree}, type_cast::convertto_string,
 };
 use rand::{thread_rng, Rng};
 
@@ -11,8 +11,8 @@ use rand::{thread_rng, Rng};
 pub fn create_confusion_matrix(
     actual: &Vec<RDataType>,
     predicted: &TArray<TString>,
-) -> (Vec<Vec<i32>>, HashMap::<String, i32>) {
-   // let mut keys = Vec::<String>::new();
+) -> (Vec<Vec<i32>>, HashMap<String, i32>) {
+    // let mut keys = Vec::<String>::new();
     let mut key_map = HashMap::<String, i32>::new();
     println!("Keys: ");
 
@@ -34,28 +34,55 @@ pub fn create_confusion_matrix(
     let mut temp_index = 0;
     for r in actual.iter() {
         match r {
-            RDataType::String(v) => 
-            match key_map.get(&v.get_value()) {
-                Some(_val) => {
-                    continue;
-                },
-                None => {
-                    key_map.insert(v.get_value(), temp_index);
-                  //  println!("{}", v.get_value());
-                    temp_index += 1;
-                },
-            },
+            RDataType::String(v) => {
+                match key_map.get(&v.get_value()) {
+                    Some(_val) => {
+                        continue;
+                    }
+                    None => {
+                        key_map.insert(v.get_value(), temp_index);
+                        //  println!("{}", v.get_value());
+                        temp_index += 1;
+                    }
+                }
+            }
+            RDataType::Char(c) => {
+                let v = c.get_value().to_string();
+                match key_map.get(&v) {
+                    Some(_val) => {
+                        continue;
+                    }
+                    None => {
+                        key_map.insert(v, temp_index);
+                        //  println!("{}", v.get_value());
+                        temp_index += 1;
+                    }
+                }
+            }
+            RDataType::Bool(b) => {
+                let v = b.get_value().to_string();
+                match key_map.get(&v) {
+                    Some(_val) => {
+                        continue;
+                    }
+                    None => {
+                        key_map.insert(v, temp_index);
+                        //  println!("{}", v.get_value());
+                        temp_index += 1;
+                    }
+                }
+            }
             _ => {
                 println!("Error");
             }
         }
     }
 
-    for (k,v) in key_map.iter(){
+    for (k, v) in key_map.iter() {
         println!("Key: {}, Value: {}", k, v);
     }
 
-  //  let size = keys.len() * 2;
+    //  let size = keys.len() * 2;
     let size = (temp_index as usize) * 2;
     let mut cm: Vec<Vec<i32>> = Vec::with_capacity(size);
     for _ in 0..size {
@@ -64,77 +91,71 @@ pub fn create_confusion_matrix(
 
     let mut i = 0;
     let false_check = Triadic::new(Degree::F);
-    let mut counter = 0;
-    for r in actual.iter() {
-        match r {
-            RDataType::String(r) => {
-                let x = predicted.get_value()[i as usize].clone();
 
-                let ar = r.get_value();
-                let ar_deg = r.get_degree();
-
-                let pr = x.get_value();
-                let pr_deg = x.get_degree();
-                //  println!("Actual deg: {} ",get_char_from_enum(ar_deg.get_value()));
-                //print!("Predicted deg: {}",get_char_from_enum(pr_deg.get_value()));
-              //  println!("CM: Counter: {} ", counter);
-                counter += 1;
-                if ar_deg == false_check || pr_deg == false_check {
-                    i += 1;
-                    continue;
-                }
-              //  let index_of_ar = keys.iter().position(|word| word.eq(&ar));
-              //  let index_of_pr = keys.iter().position(|word| word.eq(&pr));
-
-                let mut i1 = match key_map.get(&ar) {
-                    Some(v) => *v * 2,
-                    None => -1,
-                };
-
-                let mut i2 = match key_map.get(&pr) {
-                    Some(v) => *v * 2,
-                    None => -1,
-                };
-
-                // yes/T yes/L no/T no/L
-                //(index of key*2) + degree
-
-                // let mut i1 = match index_of_ar {
-                //     Some(i_ar) => (i_ar as i32) * 2,
-                //     None => -1 as i32,
-                // };
-
-                // let mut i2 = match index_of_pr {
-                //     Some(i_pr) => (i_pr as i32) * 2,
-                //     None => -1 as i32,
-                // };
-                if i1 == -1 || i2 == -1 {
-                    i += 1;
-                    continue;
-                }
-                let mut deg_index = match ar_deg.get_value() {
-                    Degree::T => 0,
-                    Degree::F => -1,
-                    Degree::L => 1,
-                };
-
-                i1 += deg_index;
-
-                deg_index = match pr_deg.get_value() {
-                    Degree::T => 0,
-                    Degree::F => -1,
-                    Degree::L => 1,
-                };
-
-                i2 += deg_index;
-                cm[i1 as usize][i2 as usize] += 1;
-                i += 1;
+    for value in actual.iter() {
+     let  r=  match value {
+            RDataType::String(v) => {
+                v.clone()
+            }
+            RDataType::Char(c) => {
+                let v = convertto_string(c.clone());
+                v 
+            }
+            RDataType::Bool(b) => {
+                let v = TString::new(b.get_value().to_string(), b.get_degree());
+                v
             }
             _ => {
-                print!("Whatever");
+                TString::default()
             }
+        };
+
+        let x = predicted.get_value()[i as usize].clone();
+
+        let ar = r.get_value();
+        let ar_deg = r.get_degree();
+
+        let pr = x.get_value();
+        let pr_deg = x.get_degree();
+
+        if ar_deg == false_check || pr_deg == false_check {
+            i += 1;
+            continue;
         }
+
+        let mut i1 = match key_map.get(&ar) {
+            Some(v) => *v * 2,
+            None => -1,
+        };
+
+        let mut i2 = match key_map.get(&pr) {
+            Some(v) => *v * 2,
+            None => -1,
+        };
+
+        if i1 == -1 || i2 == -1 {
+            i += 1;
+            continue;
+        }
+        let mut deg_index = match ar_deg.get_value() {
+            Degree::T => 0,
+            Degree::F => -1,
+            Degree::L => 1,
+        };
+
+        i1 += deg_index;
+
+        deg_index = match pr_deg.get_value() {
+            Degree::T => 0,
+            Degree::F => -1,
+            Degree::L => 1,
+        };
+
+        i2 += deg_index;
+        cm[i1 as usize][i2 as usize] += 1;
+        i += 1;
     }
+
     (cm, key_map)
 }
 
@@ -198,7 +219,7 @@ pub fn resolve_limit(
     mut predicted: TArray<TString>,
     d: char,
     percentage: f32,
-) -> Result<(Vec<Vec<i32>>, HashMap::<String, i32>), String> {
+) -> Result<(Vec<Vec<i32>>, HashMap<String, i32>), String> {
     if d.to_ascii_lowercase() != 't' && d.to_ascii_lowercase() != 'f' {
         return Err("Selected degree is not acceptable.".to_string());
     }
@@ -311,7 +332,7 @@ pub fn resolve_limit(
     //println!("limit count: {}",count);
     predicted.set_vector(predict.clone());
 
-   // println!("Actual Size: {}, Predicted Size: {}", actual.len(), predicted.length());
+    // println!("Actual Size: {}, Predicted Size: {}", actual.len(), predicted.length());
 
     return Ok(create_confusion_matrix(&actual, &predicted));
 }
@@ -366,13 +387,13 @@ pub fn calculate_recall(cm: Vec<Vec<i32>>) -> f32 {
     r
 }
 
-pub fn print_confusion_matrix(cm: &Vec<Vec<i32>>, labels_map: HashMap::<String, i32>) {
+pub fn print_confusion_matrix(cm: &Vec<Vec<i32>>, labels_map: HashMap<String, i32>) {
     let mut labels = Vec::<String>::new();
     let size = labels_map.len();
     for _i in 0..size {
         labels.push("".to_string());
     }
-    for (k,v) in labels_map.iter(){
+    for (k, v) in labels_map.iter() {
         labels[*v as usize] = k.clone();
     }
     print!("A/P ");
