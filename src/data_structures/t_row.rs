@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use crate::{data_types::{t_char::TChar, t_f32::TF32, t_i32::TI32, t_string::TString, triadic::Triadic}, operators::triadic_op::{TriadicLogicalOp, TriadicStringOp}, t_print::Print};
+use crate::{data_types::{t_bool::TBool, t_char::TChar, t_f32::TF32, t_i32::TI32, t_string::TString, triadic::Triadic}, operators::triadic_op::{TriadicLogicalOp, TriadicStringOp}, t_print::Print};
 
 
 #[derive(Clone)]
@@ -9,6 +9,7 @@ pub enum RDataType{
     String(TString),
     Integer(TI32),
     Char(TChar),
+    Bool(TBool),
     Empty
 }
 
@@ -55,6 +56,10 @@ impl TRow {
             RDataType::Char(c) => {
                 let t = TChar::new('0', self.get_degree());
                 self.set_degree(&t.tand_1(*c));
+            },
+            RDataType::Bool(b) =>{
+                let t = TBool::new(true, self.get_degree());
+                self.set_degree(&t.tand_1(*b));
             }
             _ => {
                 self.set_degree(&Triadic::default());                
