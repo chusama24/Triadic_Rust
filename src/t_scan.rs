@@ -1,3 +1,4 @@
+use crate::data_types::t_bool::TBool;
 use crate::data_types::t_char::TChar;
 use crate::data_types::t_f32::TF32;
 use crate::data_types::t_f64::TF64;
@@ -298,6 +299,23 @@ impl Scan for TChar {
             .expect("Failed to read line");
 
         let c: char = val.trim().parse()
+            .expect("Please enter a valid character");
+        self.set_value(c);
+
+        d.t_scan();
+    }
+}
+
+impl Scan for TBool {
+    fn t_scan(&mut self) {
+        let mut d = Triadic::default();
+        println!("Value: ");
+
+        let mut val = String::new();
+        io::stdin().read_line(&mut val)
+            .expect("Failed to read line");
+
+        let c: bool = val.trim().parse()
             .expect("Please enter a valid character");
         self.set_value(c);
 
