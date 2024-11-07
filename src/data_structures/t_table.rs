@@ -337,7 +337,8 @@ pub fn convert_input(input: String)-> RDataType {
                             return RDataType::Char(TChar::new(c, Triadic::default()))
                         },
                         Err(_err) => {
-                            match bool::from_str(&input) {
+                            let temp = input.to_ascii_lowercase();
+                            match bool::from_str(&temp) {
                                 Ok(b) => {
                                     return RDataType::Bool(TBool::new(b, Triadic::default()))
                                 },

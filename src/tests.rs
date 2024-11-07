@@ -1,28 +1,29 @@
-
 use crate::data_structures::t_array::TArray;
 use crate::data_structures::t_row::{RDataType, TRow};
 use crate::data_structures::t_table::Ttable;
 use crate::data_types::t_char::TChar;
+use std::str::FromStr;
 use crate::data_types::t_f32::TF32;
 use crate::data_types::t_i32::TI32;
 use crate::data_types::t_i8::TI8;
 use crate::data_types::t_string::TString;
 use crate::data_types::triadic::Triadic;
-use crate::t_enum::{ConvertToDegree, Degree::{self, *}};
-use crate::t_print::Print;
 use crate::operators::triadic_op::*;
+use crate::t_enum::{
+    ConvertToDegree,
+    Degree::{self, *},
+};
+use crate::t_print::Print;
 use crate::type_cast::{convertto_i32, convertto_string};
 
-
 /*
-use crate:: and use super:: are used to import different modules(files) in this file. 
+use crate:: and use super:: are used to import different modules(files) in this file.
 crate is used if the targeted module(file) is in the root(src folder) or another folder.
 super is used if the targeted module(file) is in the same parent folder.
 */
 
-
 /*
-This file is purely for testing only. 
+This file is purely for testing only.
 
 How to use it?
 
@@ -32,119 +33,106 @@ you should get "Run Test" between #[test] and your function to run that specific
 */
 
 #[test]
-fn test1(){
-  let t = Triadic::new(T);
-let a = TI8::new(2, t);
-let b = TI32::new(4, t);
-let c = b.tplus_1(convertto_i32(a));
-c.t_print();
-} 
-
-#[test]
-fn test2(){
-let a = 45;
-let b = 2;
-let c = a + b;
-println!("Result: {}", c);
-
+fn test1() {
+    let t = Triadic::new(T);
+    let a = TI8::new(2, t);
+    let b = TI32::new(4, t);
+    let c = b.tplus_1(convertto_i32(a));
+    c.t_print();
 }
 
 #[test]
-fn test3(){
-  let data: Box<i32> = Box::new(20);
-  let t_data: Box<TI32> = Box::new(TI32::new(10, Triadic::new(T)));
-  println!("Normal Smart Pointer: {}", *data);
-  t_data.t_print();
-
+fn test2() {
+    let a = 45;
+    let b = 2;
+    let c = a + b;
+    println!("Result: {}", c);
 }
 
 #[test]
-fn test4(){
-  let mut vec:TArray<TI32> = TArray::default();
-  let mut x = TI32::new(23, Triadic::new(T));
-
-  vec.push(x);
-  vec.t_print();
-
-  x.set_value(24);
-
-  vec.insert_at(x, 0);
-  println!("Testing triadic vectors: "); 
-  vec.t_print();
-
-  let a = vec.pop().expect("Vector is Empty!");
-a.t_print();
-
+fn test3() {
+    let data: Box<i32> = Box::new(20);
+    let t_data: Box<TI32> = Box::new(TI32::new(10, Triadic::new(T)));
+    println!("Normal Smart Pointer: {}", *data);
+    t_data.t_print();
 }
 
 #[test]
-fn test5(){
-  let s = TString::new("hello".to_string(), Triadic::new(T));
-  s.t_print();
+fn test4() {
+    let mut vec: TArray<TI32> = TArray::default();
+    let mut x = TI32::new(23, Triadic::new(T));
+
+    vec.push(x);
+    vec.t_print();
+
+    x.set_value(24);
+
+    vec.insert_at(x, 0);
+    println!("Testing triadic vectors: ");
+    vec.t_print();
+
+    let a = vec.pop().expect("Vector is Empty!");
+    a.t_print();
 }
 
 #[test]
-fn row_test(){
-  let mut row = TRow::new();
-  let true_triadic = Triadic::new('t'.enum_convert());
-  let v1 = RDataType::Float(TF32::new(5.0, true_triadic));
-  let v2 = RDataType::String(TString::new("Hot".to_string(), true_triadic));
-  let n1 = TString::new("Outlook".to_string(), true_triadic);
-  let n2 = TString::new("Temp".to_string(), true_triadic);
-  row.insert(&n1, &v1);
-  row.insert(&n2, &v2);
-
-  let mut r2 = TRow::new();
-
-  let v3 = RDataType::Float(TF32::new(6.0, true_triadic));
-  let v4 = RDataType::String(TString::new("Cold".to_string(), true_triadic));
-
-  r2.insert(&n1, &v3);
-  r2.insert(&n2, &v4);
-
-
-
-  let mut table = Ttable::new();
-  table.insert_header(&n1);
-  table.insert_header(&n2);
-
-  table.insert_row(&row);
-  table.insert_row(&r2);
-  table.print_table_row_wise();
+fn test5() {
+    let s = TString::new("hello".to_string(), Triadic::new(T));
+    s.t_print();
 }
 
+#[test]
+fn row_test() {
+    let mut row = TRow::new();
+    let true_triadic = Triadic::new('t'.enum_convert());
+    let v1 = RDataType::Float(TF32::new(5.0, true_triadic));
+    let v2 = RDataType::String(TString::new("Hot".to_string(), true_triadic));
+    let n1 = TString::new("Outlook".to_string(), true_triadic);
+    let n2 = TString::new("Temp".to_string(), true_triadic);
+    row.insert(&n1, &v1);
+    row.insert(&n2, &v2);
+
+    let mut r2 = TRow::new();
+
+    let v3 = RDataType::Float(TF32::new(6.0, true_triadic));
+    let v4 = RDataType::String(TString::new("Cold".to_string(), true_triadic));
+
+    r2.insert(&n1, &v3);
+    r2.insert(&n2, &v4);
+
+    let mut table = Ttable::new();
+    table.insert_header(&n1);
+    table.insert_header(&n2);
+
+    table.insert_row(&row);
+    table.insert_row(&r2);
+    table.print_table_row_wise();
+}
 
 #[test]
-fn comparison(){
-  let t2 = Triadic::default();
+fn comparison() {
+    let t2 = Triadic::default();
 
-  let t = Triadic::new('t'.enum_convert());
+    let t = Triadic::new('t'.enum_convert());
     let f = Triadic::new('f'.enum_convert());
     let l = Triadic::default();
 
     match t2.get_value() {
-      Degree::T => {
-
-      }, 
-      Degree::F => {
-
-      },
-      Degree::L => {
-
-      }
+        Degree::T => {}
+        Degree::F => {}
+        Degree::L => {}
     }
 
     if t2 == f {
-      println!("SMAE")
+        println!("SMAE")
     }
 }
 
 #[test]
-fn compare_string(){
- let temp = TString::default();
- if temp == TString::default(){
-  println!("EMpty");
- }
+fn compare_string() {
+    let input = "True".to_string();
+    match bool::from_str(&input) {
+        Ok(b) => println!("Boolean"),
+        Err(_err) => println!("Err: {}", _err),
+    }
 }
-
-

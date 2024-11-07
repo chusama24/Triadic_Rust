@@ -3,7 +3,7 @@ use std::collections::HashMap;
 use crate::{
     data_structures::{t_array::TArray, t_row::RDataType},
     data_types::{t_string::TString, triadic::Triadic, triadic_type::Ttypes},
-    t_enum::{get_char_from_enum, ConvertToDegree, Degree}, type_cast::convertto_string,
+    t_enum::{ConvertToDegree, Degree}, type_cast::convertto_string,
 };
 use rand::{thread_rng, Rng};
 

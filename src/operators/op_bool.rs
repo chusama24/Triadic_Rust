@@ -4,7 +4,7 @@ use crate::data_types::triadic::Triadic;
 use crate::data_types::triadic_type::Ttypes;
 use crate::t_enum::Degree;
 
-use super::triadic_op::{TriadicArithmeticOp, TriadicLogicalOp, TriadicRelationalOp};
+use super::triadic_op::{TriadicLogicalOp, TriadicRelationalOp};
 
 /*
 use crate:: and use super:: are used to import different modules(files) in this file. 
