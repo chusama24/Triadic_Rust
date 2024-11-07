@@ -1,4 +1,4 @@
-use crate::{data_types::{t_char::TChar, t_f32::TF32, t_i32::TI32, t_string::TString, triadic::Triadic, triadic_type::Ttypes}, operators::triadic_op::TriadicStringOp, t_enum::ConvertToDegree, t_print::Print};
+use crate::{data_types::{t_char::TChar, t_f32::TF32, t_i32::TI32, t_string::TString, triadic::Triadic, triadic_type::Ttypes}, operators::triadic_op::TriadicStringOp, t_enum::{ConvertToDegree, Degree}, t_print::Print};
 use std::str::FromStr;
 use std::fs::File;
 use std::io::BufReader;
@@ -100,6 +100,13 @@ RDataType::Integer(TI32::default());
                 self.header.remove(i);
             }
             i += 1;
+        }
+        self.header.set_degree(Triadic::new(Degree::T));
+
+        for n in self.header.get_value(){
+            let deg = self.header.get_degree();
+            let temp = TString::new("temp".to_string(), deg);
+            self.header.set_degree(n.tand_1(&temp));
         }
     }
 
@@ -276,9 +283,9 @@ RDataType::Integer(TI32::default());
                             let index: i32 = (i-1)/2;
                             let attr = table.get_header(index);
                             match temp {
-                                RDataType::Char(mut v) => v.set_degree(d),
-                                RDataType::Float(mut v) => v.set_degree(d),
-                                RDataType::Integer(mut v) => v.set_degree(d),
+                                RDataType::Char(ref mut v) => v.set_degree(d),
+                                RDataType::Float(ref mut v) => v.set_degree(d),
+                                RDataType::Integer(ref mut v) => v.set_degree(d),
                                 RDataType::String(ref mut v) => v.set_degree(d),
                                 RDataType::Empty => {
                                     temp = RDataType::String(TString::new("".to_string(), d));
@@ -297,6 +304,13 @@ RDataType::Integer(TI32::default());
      }    
         Ok(table)
     }  
+
+    pub fn remove_column_by_name(&mut self,name:TString){
+        for row in self.data.iter_mut(){
+            row.remove_val(&name);
+        }
+        self.remove_header(&name);
+    }
 }
 
 pub fn convert_input(input: String)-> RDataType {
@@ -327,3 +341,4 @@ pub fn convert_input(input: String)-> RDataType {
         },
     }
 }
+

@@ -91,4 +91,32 @@ impl TRow {
         print!("Degree of TRow: ");
         self.degree.t_print();
     }
+
+    pub fn remove_val(&mut self,name: &TString){
+        self.data.remove(name);
+        self.set_degree(&Triadic::new(Degree::T));
+        for (k,v) in self.data.clone(){
+            match v {
+                RDataType::Float(tf32) => {
+                    let t = TF32::new(0.0, self.get_degree());
+                    self.set_degree(&t.tand_1(tf32));
+                },
+                RDataType::String(tstring) => {
+                    let t = TString::new("".to_string(), self.get_degree());
+                    self.set_degree(&t.tand_1(&tstring));
+                },
+                RDataType::Integer(ti32) => {
+                    let t = TI32::new(0, self.get_degree());
+                    self.set_degree(&t.tand_1(ti32));
+                },
+                RDataType::Char(c) => {
+                    let t = TChar::new('0', self.get_degree());
+                    self.set_degree(&t.tand_1(c));
+                }
+                _ => {
+                    self.set_degree(&Triadic::default());                
+                }
+            }
+        }
+    }
 }
