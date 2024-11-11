@@ -3,7 +3,7 @@ use std::collections::HashMap;
 use crate::{data_types::{t_bool::TBool, t_char::TChar, t_f32::TF32, t_i32::TI32, t_string::TString, triadic::Triadic}, operators::triadic_op::{TriadicLogicalOp, TriadicStringOp}, t_enum::Degree, t_print::Print};
 
 
-#[derive(Clone, PartialEq, Eq, Hash)]
+#[derive(Clone, PartialEq)]
 pub enum RDataType{
     Float(TF32),
     String(TString),
