@@ -1,4 +1,4 @@
-use crate::{data_types::{t_char::TChar, t_f32::TF32, t_i32::TI32, t_string::TString, triadic::Triadic, triadic_type::Ttypes}, operators::triadic_op::TriadicStringOp, t_enum::{ConvertToDegree, Degree}, t_print::Print};
+use crate::{data_types::{t_bool::TBool, t_char::TChar, t_f32::TF32, t_i32::TI32, t_string::TString, triadic::Triadic, triadic_type::Ttypes}, operators::triadic_op::TriadicStringOp, t_enum::{ConvertToDegree, Degree}, t_print::Print};
 use std::str::FromStr;
 use std::fs::File;
 use std::io::BufReader;
@@ -131,6 +131,7 @@ RDataType::Integer(TI32::default());
                     RDataType::String(v) => v.t_print(),
                     RDataType::Integer(v)=> v.t_print(),
                     RDataType::Char(v) => v.t_print(),
+                    RDataType::Bool(v) => v.t_print(),
                     _ => println!("None")
                 }
             }
@@ -152,6 +153,7 @@ RDataType::Integer(TI32::default());
                     RDataType::Float(_c) => return "float".to_string(),
                     RDataType::Integer(_c) => return "integer".to_string(),
                     RDataType::String(_c) => return "string".to_string(),
+                    RDataType::Bool(_c) => return "bool".to_string(),
                     _ => return "None".to_string()
                 }
             }
@@ -175,6 +177,7 @@ RDataType::Integer(TI32::default());
                     RDataType::Float(_c) => return "float".to_string(),
                     RDataType::Integer(_c) => return "integer".to_string(),
                     RDataType::String(_c) => return "string".to_string(),
+                    RDataType::Bool(_c) => return "bool".to_string(),
                     _ => return "None".to_string()
                 }
             }
@@ -287,8 +290,9 @@ RDataType::Integer(TI32::default());
                                 RDataType::Float(ref mut v) => v.set_degree(d),
                                 RDataType::Integer(ref mut v) => v.set_degree(d),
                                 RDataType::String(ref mut v) => v.set_degree(d),
+                                RDataType::Bool(ref mut v) => v.set_degree(d),
                                 RDataType::Empty => {
-                                    temp = RDataType::String(TString::new("".to_string(), d));
+                                    temp = RDataType::String(TString::new("".to_string(), Triadic::new('f'.enum_convert())));
                                 }
                             }
                             row.insert(&attr, &temp);
@@ -333,7 +337,15 @@ pub fn convert_input(input: String)-> RDataType {
                             return RDataType::Char(TChar::new(c, Triadic::default()))
                         },
                         Err(_err) => {
-                            return RDataType::String(TString::new(input, Triadic::default()))
+                            let temp = input.to_ascii_lowercase();
+                            match bool::from_str(&temp) {
+                                Ok(b) => {
+                                    return RDataType::Bool(TBool::new(b, Triadic::default()))
+                                },
+                                Err(_err) => {
+                                    return RDataType::String(TString::new(input, Triadic::default()))
+                                },
+                            }
                         }
                     }
                 }

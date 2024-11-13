@@ -1,7 +1,7 @@
 use crate::data_types::triadic_type::Ttypes;
 use super::triadic::Triadic;
 
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, PartialEq)]
 pub struct TF32 {
     value: f32,
     deg: Triadic,

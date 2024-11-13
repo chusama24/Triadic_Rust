@@ -57,6 +57,7 @@ pub mod operators{
     pub mod op_f64;
     pub mod op_tchar;
     pub mod op_string;
+    pub mod op_bool;
 }
 pub mod data_structures{
     pub mod t_array;

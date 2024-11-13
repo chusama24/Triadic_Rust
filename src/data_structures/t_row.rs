@@ -3,7 +3,7 @@ use std::collections::HashMap;
 use crate::{data_types::{t_bool::TBool, t_char::TChar, t_f32::TF32, t_i32::TI32, t_string::TString, triadic::Triadic}, operators::triadic_op::{TriadicLogicalOp, TriadicStringOp}, t_enum::Degree, t_print::Print};
 
 
-#[derive(Clone)]
+#[derive(Clone, PartialEq)]
 pub enum RDataType{
     Float(TF32),
     String(TString),
@@ -56,11 +56,11 @@ impl TRow {
             RDataType::Char(c) => {
                 let t = TChar::new('0', self.get_degree());
                 self.set_degree(&t.tand_1(*c));
-            }
-            RDataType::Bool(b) => {
-                let b = TChar::new('0', self.get_degree());
-                self.set_degree(&b.tand_1(*b));
-            }
+            },
+            RDataType::Bool(b) =>{
+                let t = TBool::new(true, self.get_degree());
+                self.set_degree(&t.tand_1(*b));
+            },
             _ => {
                 self.set_degree(&Triadic::default());                
             }
@@ -85,6 +85,7 @@ impl TRow {
                 RDataType::String(tstring) => tstring.t_print(),
                 RDataType::Integer(ti32) => ti32.t_print(),
                 RDataType::Char(c) => c.t_print(),
+                RDataType::Bool(b) => b.t_print(),
                 _ => print!("None") 
             }
         }
@@ -95,7 +96,7 @@ impl TRow {
     pub fn remove_val(&mut self,name: &TString){
         self.data.remove(name);
         self.set_degree(&Triadic::new(Degree::T));
-        for (k,v) in self.data.clone(){
+        for (_k,v) in self.data.clone(){
             match v {
                 RDataType::Float(tf32) => {
                     let t = TF32::new(0.0, self.get_degree());
@@ -112,6 +113,10 @@ impl TRow {
                 RDataType::Char(c) => {
                     let t = TChar::new('0', self.get_degree());
                     self.set_degree(&t.tand_1(c));
+                },
+                RDataType::Bool(b) => {
+                    let t = TBool::new(true, self.get_degree());
+                    self.set_degree(&t.tand_1(b));
                 }
                 _ => {
                     self.set_degree(&Triadic::default());                

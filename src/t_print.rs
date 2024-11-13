@@ -1,4 +1,5 @@
 use crate::data_structures::t_array::TArray;
+use crate::data_types::t_bool::TBool;
 use crate::data_types::t_char::TChar;
 use crate::data_types::t_f32::TF32;
 use crate::data_types::t_f64::TF64;
@@ -134,6 +135,14 @@ impl Print for TChar{
 }
 
 impl Print for TString{
+    fn t_print(&self) {
+        println!("Value: {} -----------> Degree: ", self.get_value());
+        let t = self.get_degree();
+        t.t_print();
+    }
+}
+
+impl Print for TBool {
     fn t_print(&self) {
         println!("Value: {} -----------> Degree: ", self.get_value());
         let t = self.get_degree();

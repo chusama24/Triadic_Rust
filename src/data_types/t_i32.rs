@@ -20,7 +20,7 @@ super is used if the targeted module(file) is in the same parent folder.
  (Please give it a try and let me know if you get some success in it)
 */
 
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, PartialEq)]
  pub struct TI32{
     value: i32,
     deg: Triadic,
