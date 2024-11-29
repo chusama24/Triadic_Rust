@@ -38,6 +38,10 @@ impl Ttable {
         self.data[i].clone()
     }
 
+    pub fn get_all_rows(&self) -> Vec<TRow> {
+        self.data.clone()
+    }
+
     pub fn get_size(&self) -> usize {
         self.data.len()
     }
