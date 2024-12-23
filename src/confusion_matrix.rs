@@ -213,7 +213,7 @@ pub fn resolve_limit(
     mut predicted: TArray<TString>,
     d: char,
     percentage: f32,
-) -> Result<(Vec<Vec<i32>>, HashMap<String, i32>), String> {
+) -> Result<(Vec<Vec<i32>>, HashMap<String, i32>, TArray<TString>), String> {
     if d.to_ascii_lowercase() != 't' && d.to_ascii_lowercase() != 'f' {
         return Err("Selected degree is not acceptable.".to_string());
     }
@@ -327,8 +327,8 @@ pub fn resolve_limit(
     predicted.set_vector(predict.clone());
 
     // println!("Actual Size: {}, Predicted Size: {}", actual.len(), predicted.length());
-
-    return Ok(create_confusion_matrix(&actual, &predicted));
+    let (matrix,labels) = create_confusion_matrix(&actual, &predicted);
+    return Ok((matrix, labels, predicted));
 }
 
 pub fn calculate_accuracy(cm: Vec<Vec<i32>>) -> f32 {
