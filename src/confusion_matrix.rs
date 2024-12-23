@@ -83,14 +83,13 @@ pub fn create_confusion_matrix(
     }
 
     //  let size = keys.len() * 2;
-    let size = (temp_index as usize) * 2;
+    let size = (temp_index as usize) * 3;
     let mut cm: Vec<Vec<i32>> = Vec::with_capacity(size);
     for _ in 0..size {
         cm.push(vec![0; size]);
     }
 
     let mut i = 0;
-    let false_check = Triadic::new(Degree::F);
 
     for value in actual.iter() {
      let  r=  match value {
@@ -118,18 +117,13 @@ pub fn create_confusion_matrix(
         let pr = x.get_value();
         let pr_deg = x.get_degree();
 
-        if ar_deg == false_check || pr_deg == false_check {
-            i += 1;
-            continue;
-        }
-
         let mut i1 = match key_map.get(&ar) {
-            Some(v) => *v * 2,
+            Some(v) => *v * 3,
             None => -1,
         };
 
         let mut i2 = match key_map.get(&pr) {
-            Some(v) => *v * 2,
+            Some(v) => *v * 3,
             None => -1,
         };
 
@@ -139,16 +133,16 @@ pub fn create_confusion_matrix(
         }
         let mut deg_index = match ar_deg.get_value() {
             Degree::T => 0,
-            Degree::F => -1,
-            Degree::L => 1,
+            Degree::F => 1,
+            Degree::L => 2,
         };
 
         i1 += deg_index;
 
         deg_index = match pr_deg.get_value() {
             Degree::T => 0,
-            Degree::F => -1,
-            Degree::L => 1,
+            Degree::F => 1,
+            Degree::L => 2,
         };
 
         i2 += deg_index;
@@ -398,15 +392,19 @@ pub fn print_confusion_matrix(cm: &Vec<Vec<i32>>, labels_map: HashMap<String, i3
     }
     print!("A/P ");
     for l in labels.iter() {
-        print!("{}/T {}/L ", l, l);
+        print!("{}/T {}/F {}/L ", l, l, l);
     }
     println!("");
 
     for i in 0..cm.len() {
-        if i % 2 == 0 {
-            print!("{}/T ", labels[i / 2 as usize]);
-        } else {
-            print!("{}/L ", labels[i / 2 as usize]);
+        if i % 3 == 0 {
+            print!("{}/T ", labels[i / 3 as usize]);
+        }
+        else if i % 3==1{
+            print!("{}/F ", labels[i / 3 as usize]);
+        }
+        else {
+            print!("{}/L ", labels[i / 3 as usize]);
         }
         for j in 0..cm.len() {
             print!("{} ", cm[i][j]);
