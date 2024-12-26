@@ -3,7 +3,8 @@ use std::collections::HashMap;
 use crate::{
     data_structures::{t_array::TArray, t_row::RDataType},
     data_types::{t_string::TString, triadic::Triadic, triadic_type::Ttypes},
-    t_enum::{ConvertToDegree, Degree}, type_cast::convertto_string,
+    t_enum::{ConvertToDegree, Degree},
+    type_cast::convertto_string,
 };
 use rand::{thread_rng, Rng};
 
@@ -12,24 +13,8 @@ pub fn create_confusion_matrix(
     actual: &Vec<RDataType>,
     predicted: &TArray<TString>,
 ) -> (Vec<Vec<i32>>, HashMap<String, i32>) {
-    // let mut keys = Vec::<String>::new();
     let mut key_map = HashMap::<String, i32>::new();
     println!("Keys: ");
-
-    // for r in actual.iter() {
-    //     match r {
-    //         RDataType::String(v) => {
-    //             if keys.contains(&v.get_value()) {
-    //                 continue;
-    //             }
-    //             println!("{}", v.get_value());
-    //             keys.push(v.get_value());
-    //         }
-    //         _ => {
-    //             println!("Error");
-    //         }
-    //     }
-    // }
 
     let mut temp_index = 0;
     for r in actual.iter() {
@@ -92,21 +77,17 @@ pub fn create_confusion_matrix(
     let mut i = 0;
 
     for value in actual.iter() {
-     let  r=  match value {
-            RDataType::String(v) => {
-                v.clone()
-            }
+        let r = match value {
+            RDataType::String(v) => v.clone(),
             RDataType::Char(c) => {
                 let v = convertto_string(c.clone());
-                v 
+                v
             }
             RDataType::Bool(b) => {
                 let v = TString::new(b.get_value().to_string(), b.get_degree());
                 v
             }
-            _ => {
-                TString::default()
-            }
+            _ => TString::default(),
         };
 
         let x = predicted.get_value()[i as usize].clone();
@@ -161,8 +142,9 @@ fn get_random_value<T>(vector: &[T]) -> Option<(&T, usize)> {
     let index = thread_rng().gen_range(0..vector.len());
     Some((&vector[index], index))
 }
+
 pub fn get_indices(
-    total_count: i32,
+    required_count: HashMap<String, f32>,
     mut limit_indices: HashMap<String, Vec<i32>>,
 ) -> HashMap<String, Vec<i32>> {
     let mut new = HashMap::<String, Vec<i32>>::new();
@@ -170,44 +152,48 @@ pub fn get_indices(
     let temp_map = limit_indices.clone();
     let keys: Vec<&String> = temp_map.keys().collect();
 
-    let mut count = 0;
-
-    loop {
-        if count == total_count {
-            break;
-        }
-
-        match get_random_value(&keys) {
-            // Key Selected : Predicted or Actual
-            Some((key, _index)) => match limit_indices.get_mut(*key) {
-                // Get Vector of the selected key from the hashmap
-                Some(selected_vector) => match get_random_value(&selected_vector.clone()) {
-                    // Get random value from the selected vector
-                    Some((v, val_index)) => match new.get_mut(*key) {
-                        // Get the Vector of the selected key from the new hashmap
-                        Some(vec) => {
-                            // Push
-                            vec.push(*v);
-                            count += 1;
-                            selected_vector.remove(val_index);
-                        }
-                        None => {
-                            let mut n = Vec::<i32>::new();
-                            n.push(*v);
-                            count += 1;
-                            new.insert(key.to_string(), n);
-                            selected_vector.remove(val_index);
-                        }
-                    },
-                    None => continue,
-                },
-                None => continue,
-            },
+    for k in keys {
+        let mut count = 0;
+        match limit_indices.get_mut(k) {
+            // Get Vector of the selected k from the hashmap
+            Some(selected_vector) => {
+                let req = match required_count.get(k) {
+                    Some(v) => *v as i32,
+                    None => 0,
+                };
+                loop {
+                    if count == req {
+                        break;
+                    }
+                    match get_random_value(&selected_vector.clone()) {
+                        // Get random value from the selected vector
+                        Some((v, val_index)) => match new.get_mut(k) {
+                            // Get the Vector of the selected k from the new hashmap
+                            Some(vec) => {
+                                // Push
+                                vec.push(*v);
+                                count += 1;
+                                selected_vector.remove(val_index);
+                            }
+                            None => {
+                                let mut n = Vec::<i32>::new();
+                                n.push(*v);
+                                count += 1;
+                                new.insert(k.to_string(), n);
+                                selected_vector.remove(val_index);
+                            }
+                        },
+                        None => continue,
+                    }
+                }
+            }
             None => continue,
         }
     }
     new
 }
+
+
 pub fn resolve_limit(
     mut actual: Vec<RDataType>,
     mut predicted: TArray<TString>,
@@ -230,13 +216,18 @@ pub fn resolve_limit(
     let limit = Triadic::default();
 
     let mut limit_index = HashMap::<String, Vec<i32>>::new();
-    let mut actual_count = Vec::<i32>::new();
+    let mut limit_count = Vec::<i32>::new();
     let mut predicted_count = Vec::<i32>::new();
+    let mut actual_count = Vec::<i32>::new();
 
     for i in 0..size {
         match actual[i].clone() {
             RDataType::String(a) => {
-                if a.get_degree() == limit {
+                if a.get_degree() == limit && predict[i].get_degree() == limit {
+                    limit_count.push(i as i32);
+                } else if predict[i].get_degree() == limit {
+                    predicted_count.push(i as i32);
+                } else if a.get_degree() == limit {
                     actual_count.push(i as i32);
                 }
             }
@@ -244,23 +235,33 @@ pub fn resolve_limit(
                 println!("Actual value is not string");
             }
         }
-
-        if predict[i].get_degree() == limit {
-            predicted_count.push(i as i32);
-        }
     }
 
-    let total = actual_count.len() + predicted_count.len();
-    println!("Total: {}", total);
     println!("Total Actual: {}", actual_count.len());
     println!("Total Predicted: {}", predicted_count.len());
+    println!("Total Limit: {}", limit_count.len());
 
-    limit_index.insert("Actual".to_string(), actual_count);
-    limit_index.insert("Predicted".to_string(), predicted_count);
+    limit_index.insert("Actual".to_string(), actual_count.clone());
+    limit_index.insert("Predicted".to_string(), predicted_count.clone());
+    limit_index.insert("Limit".to_string(), limit_count.clone());
 
-    let required_count = (total as f32 * percentage).ceil();
-    println!("required_count: {}", required_count);
+    let mut required_count = HashMap::<String, f32>::new();
+    required_count.insert(
+        "Actual".to_string(),
+        (actual_count.len() as f32 * percentage).ceil(),
+    );
+    required_count.insert(
+        "Predicted".to_string(),
+        (predicted_count.len() as f32 * percentage).ceil(),
+    );
+    required_count.insert(
+        "Limit".to_string(),
+        (limit_count.len() as f32 * percentage).ceil(),
+    );
 
+    for (k, v) in required_count.clone() {
+        print!("{}  {}", k, v);
+    }
     let mut indices = HashMap::<String, Vec<i32>>::new();
 
     if percentage == 1.0 {
@@ -268,8 +269,9 @@ pub fn resolve_limit(
     } else if percentage == 0.0 {
         indices.insert("Actual".to_string(), Vec::new());
         indices.insert("Predicted".to_string(), Vec::new());
+        indices.insert("Limit".to_string(), Vec::new());
     } else {
-        indices = get_indices(required_count as i32, limit_index);
+        indices = get_indices(required_count, limit_index);
     }
 
     match indices.get("Actual") {
@@ -294,13 +296,47 @@ pub fn resolve_limit(
             predicted_count = Vec::new();
         }
     }
+
+    match indices.get("Limit") {
+        Some(a) => {
+            limit_count = a.clone();
+            println!(
+                "Limit Count in Match Statement: {}",
+                limit_count.len()
+            );
+        }
+        None => {
+            limit_count = Vec::new();
+        }
+    }
     println!("Actual count {}", actual_count.len());
     println!("Predicted count {}", predicted_count.len());
+    println!("Limit count {}", limit_count.len());
 
     for i in 0..size {
         match actual[i].clone() {
             RDataType::String(mut a) => {
-                if a.get_degree() == limit {
+                if a.get_degree() == limit && predict[i].get_degree() == limit {
+                    if limit_count.contains(&(i as i32)) {
+                        a.set_degree(deg.clone());
+                        predict[i].set_degree(deg.clone());
+                    }
+                    else{
+                        a.set_degree(deg2.clone());
+                        predict[i].set_degree(deg2.clone());
+                    }
+                    actual[i] = RDataType::String(a);
+                } 
+
+                else if predict[i].get_degree() == limit {
+                    if predicted_count.contains(&(i as i32)) {
+                        predict[i].set_degree(deg.clone());
+                    } else {
+                        predict[i].set_degree(deg2.clone());
+                    }
+                } 
+
+                else if a.get_degree() == limit {
                     if actual_count.contains(&(i as i32)) {
                         a.set_degree(deg.clone());
                     } else {
@@ -308,26 +344,17 @@ pub fn resolve_limit(
                     }
                     actual[i] = RDataType::String(a);
                 }
+
             }
             _ => {
                 println!("Actual value is not string");
             }
         }
-
-        if predict[i].get_degree() == limit {
-            if predicted_count.contains(&(i as i32)) {
-                predict[i].set_degree(deg.clone());
-            } else {
-                predict[i].set_degree(deg2.clone());
-            }
-            //count += 1;
-        }
     }
-    //println!("limit count: {}",count);
     predicted.set_vector(predict.clone());
 
     // println!("Actual Size: {}, Predicted Size: {}", actual.len(), predicted.length());
-    let (matrix,labels) = create_confusion_matrix(&actual, &predicted);
+    let (matrix, labels) = create_confusion_matrix(&actual, &predicted);
     return Ok((matrix, labels, predicted));
 }
 
@@ -399,11 +426,9 @@ pub fn print_confusion_matrix(cm: &Vec<Vec<i32>>, labels_map: HashMap<String, i3
     for i in 0..cm.len() {
         if i % 3 == 0 {
             print!("{}/T ", labels[i / 3 as usize]);
-        }
-        else if i % 3==1{
+        } else if i % 3 == 1 {
             print!("{}/F ", labels[i / 3 as usize]);
-        }
-        else {
+        } else {
             print!("{}/L ", labels[i / 3 as usize]);
         }
         for j in 0..cm.len() {
