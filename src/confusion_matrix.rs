@@ -399,8 +399,11 @@ pub fn calculate_precision(cm: Vec<Vec<i32>>) -> f32 {
             break;
         }
     }
-    let mut denominator = 0.0;
-    for r in cm.iter() {
+    let mut denominator = numerator;
+    for (i,r) in cm.iter().enumerate() {
+        if i == 0 {
+            continue;
+        }
         denominator += r[0] as f32;
     }
     denominator += cm[1][2] as f32;
@@ -420,10 +423,13 @@ pub fn calculate_recall(cm: Vec<Vec<i32>>) -> f32 {
             break;
         }
     }
-    let mut denominator = 0 as f32;
+    let mut denominator =  numerator;
     let row = &cm[0];
 
-    for r in row {
+    for (i,r) in row.iter().enumerate() {
+        if i == 0 {
+            continue;
+        }
         denominator += *r as f32;
     }
 
