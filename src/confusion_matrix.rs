@@ -490,7 +490,9 @@ pub fn print_confusion_matrix(cm: &Vec<Vec<i32>>, labels_map: HashMap<String, i3
     let a = calculate_accuracy(cm.clone());
     let p = calculate_precision(cm.clone());
     let r = calculate_recall(cm.clone());
+    let rol = calculate_rate_of_learning(cm.clone());
     println!("Accuracy: {}", a);
     println!("Precision: {}", p);
     println!("Recall: {}", r);
+    println!("Rate of Learning: {}", rol);
 }
