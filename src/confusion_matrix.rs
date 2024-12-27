@@ -1,10 +1,7 @@
 use std::collections::HashMap;
 
 use crate::{
-    data_structures::{t_array::TArray, t_row::RDataType},
-    data_types::{t_string::TString, triadic::Triadic, triadic_type::Ttypes},
-    t_enum::{ConvertToDegree, Degree},
-    type_cast::convertto_string,
+    data_structures::{t_array::TArray, t_row::RDataType}, data_types::{t_string::TString, triadic::Triadic, triadic_type::Ttypes}, operators::triadic_op::TriadicStringOp, t_enum::{ConvertToDegree, Degree}, type_cast::convertto_string
 };
 use rand::{thread_rng, Rng};
 
@@ -161,6 +158,10 @@ pub fn get_indices(
                     Some(v) => *v as i32,
                     None => 0,
                 };
+                if req == selected_vector.len() as i32 {
+                    new.insert(k.to_string(), selected_vector.to_vec());
+                    continue;
+                }
                 loop {
                     if count == req {
                         break;
@@ -193,12 +194,12 @@ pub fn get_indices(
     new
 }
 
-
 pub fn resolve_limit(
     mut actual: Vec<RDataType>,
     mut predicted: TArray<TString>,
     d: char,
     percentage: f32,
+    auto: bool,
 ) -> Result<(Vec<Vec<i32>>, HashMap<String, i32>, TArray<TString>), String> {
     if d.to_ascii_lowercase() != 't' && d.to_ascii_lowercase() != 'f' {
         return Err("Selected degree is not acceptable.".to_string());
@@ -246,14 +247,27 @@ pub fn resolve_limit(
     limit_index.insert("Limit".to_string(), limit_count.clone());
 
     let mut required_count = HashMap::<String, f32>::new();
-    required_count.insert(
-        "Actual".to_string(),
-        (actual_count.len() as f32 * percentage).ceil(),
-    );
-    required_count.insert(
-        "Predicted".to_string(),
-        (predicted_count.len() as f32 * percentage).ceil(),
-    );
+
+    if auto == false {
+        required_count.insert(
+            "Actual".to_string(),
+            (actual_count.len() as f32 * percentage).ceil(),
+        );
+        required_count.insert(
+            "Predicted".to_string(),
+            (predicted_count.len() as f32 * percentage).ceil(),
+        );
+    } else {
+        required_count.insert(
+            "Actual".to_string(),
+            actual_count.len() as f32
+        );
+        required_count.insert(
+            "Predicted".to_string(),
+            predicted_count.len() as f32
+        );
+    }
+
     required_count.insert(
         "Limit".to_string(),
         (limit_count.len() as f32 * percentage).ceil(),
@@ -300,10 +314,7 @@ pub fn resolve_limit(
     match indices.get("Limit") {
         Some(a) => {
             limit_count = a.clone();
-            println!(
-                "Limit Count in Match Statement: {}",
-                limit_count.len()
-            );
+            println!("Limit Count in Match Statement: {}", limit_count.len());
         }
         None => {
             limit_count = Vec::new();
@@ -320,31 +331,33 @@ pub fn resolve_limit(
                     if limit_count.contains(&(i as i32)) {
                         a.set_degree(deg.clone());
                         predict[i].set_degree(deg.clone());
-                    }
-                    else{
+                    } else {
                         a.set_degree(deg2.clone());
                         predict[i].set_degree(deg2.clone());
                     }
                     actual[i] = RDataType::String(a);
-                } 
-
-                else if predict[i].get_degree() == limit {
-                    if predicted_count.contains(&(i as i32)) {
+                } else if predict[i].get_degree() == limit {
+                    if auto == true {
+                    let new_deg =  a.tand_1(&predict[i]);
+                    predict[i].set_degree(new_deg);
+                    }
+                    else if predicted_count.contains(&(i as i32)) {
                         predict[i].set_degree(deg.clone());
                     } else {
                         predict[i].set_degree(deg2.clone());
                     }
-                } 
-
-                else if a.get_degree() == limit {
-                    if actual_count.contains(&(i as i32)) {
+                } else if a.get_degree() == limit {
+                    if auto == true {
+                        let new_deg =  predict[i].tand_1(&a);
+                        a.set_degree(new_deg);
+                        }
+                    else if actual_count.contains(&(i as i32)) {
                         a.set_degree(deg.clone());
                     } else {
                         a.set_degree(deg2.clone());
                     }
                     actual[i] = RDataType::String(a);
                 }
-
             }
             _ => {
                 println!("Actual value is not string");
@@ -365,7 +378,7 @@ pub fn calculate_accuracy(cm: Vec<Vec<i32>>) -> f32 {
     for (i, r) in cm.iter().enumerate() {
         for (j, c) in r.iter().enumerate() {
             denominator += *c as f32;
-            if i == j && i % 2 == 0 {
+            if i == j {
                 numerator += *c as f32;
             }
         }
@@ -379,11 +392,18 @@ pub fn calculate_accuracy(cm: Vec<Vec<i32>>) -> f32 {
 }
 
 pub fn calculate_precision(cm: Vec<Vec<i32>>) -> f32 {
-    let numerator = cm[0][0] as f32;
-    let mut denominator = 0 as f32;
+    let mut numerator = 0.0;
+    for (i, r) in cm.iter().enumerate() {
+        numerator += r[i] as f32;
+        if i > 3 {
+            break;
+        }
+    }
+    let mut denominator = 0.0;
     for r in cm.iter() {
         denominator += r[0] as f32;
     }
+    denominator += cm[1][2] as f32;
 
     let p = numerator / denominator;
     if denominator == 0.0 {
@@ -393,7 +413,13 @@ pub fn calculate_precision(cm: Vec<Vec<i32>>) -> f32 {
 }
 
 pub fn calculate_recall(cm: Vec<Vec<i32>>) -> f32 {
-    let numerator = cm[0][0] as f32;
+    let mut numerator = 0.0;
+    for (i, r) in cm.iter().enumerate() {
+        numerator += r[i] as f32;
+        if i > 3 {
+            break;
+        }
+    }
     let mut denominator = 0 as f32;
     let row = &cm[0];
 
@@ -406,6 +432,30 @@ pub fn calculate_recall(cm: Vec<Vec<i32>>) -> f32 {
         return 0.0;
     }
     r
+}
+
+pub fn calculate_rate_of_learning(cm: Vec<Vec<i32>>) -> f32 {
+    let mut denominator = 0.0;
+    let mut numerator = 0.0;
+
+    for (i, r) in cm.iter().enumerate() {
+        for (j, c) in r.iter().enumerate() {
+            denominator += *c as f32;
+            if i % 3 == 0 && j % 3 == 1 {
+                numerator += *c as f32;
+            } else if i % 3 == 1 && j >= 3 {
+                numerator += *c as f32;
+            } else if i % 3 == 2 && (j >= 3 && j % 3 == 1) {
+                numerator += *c as f32;
+            }
+        }
+    }
+
+    let rol = numerator / denominator;
+    if denominator == 0.0 {
+        return 0.0;
+    }
+    rol
 }
 
 pub fn print_confusion_matrix(cm: &Vec<Vec<i32>>, labels_map: HashMap<String, i32>) {
