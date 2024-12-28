@@ -447,15 +447,17 @@ pub fn calculate_rate_of_learning(cm: Vec<Vec<i32>>) -> f32 {
     for (i, r) in cm.iter().enumerate() {
         for (j, c) in r.iter().enumerate() {
             denominator += *c as f32;
-            if i % 3 == 0 && j % 3 == 1 {
-                numerator += *c as f32;
-            } else if i % 3 == 1 && j >= 3 {
-                numerator += *c as f32;
-            } else if i % 3 == 2 && (j >= 3 && j % 3 == 1) {
-                numerator += *c as f32;
-            }
+           if i != j {
+            numerator += *c as f32;
+           }
         }
     }
+
+    numerator -= cm[0][3] as f32;
+    numerator -= cm[1][0] as f32;
+    numerator -= cm[3][0] as f32;
+    numerator -= cm[4][3] as f32;
+
 
     let rol = numerator / denominator;
     if denominator == 0.0 {
