@@ -272,9 +272,9 @@ pub fn resolve_limit(
         "Limit".to_string(),
         (limit_count.len() as f32 * percentage).ceil(),
     );
-
+    println!("Required Count: ");
     for (k, v) in required_count.clone() {
-        print!("{}  {}", k, v);
+        println!("{}  {}", k, v);
     }
     let mut indices = HashMap::<String, Vec<i32>>::new();
 
