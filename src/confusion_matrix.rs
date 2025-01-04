@@ -1,7 +1,11 @@
 use std::collections::HashMap;
 
 use crate::{
-    data_structures::{t_array::TArray, t_row::RDataType}, data_types::{t_string::TString, triadic::Triadic, triadic_type::Ttypes}, operators::triadic_op::TriadicStringOp, t_enum::{ConvertToDegree, Degree}, type_cast::convertto_string
+    data_structures::{t_array::TArray, t_row::RDataType},
+    data_types::{t_string::TString, triadic::Triadic, triadic_type::Ttypes},
+    operators::triadic_op::TriadicStringOp,
+    t_enum::{ConvertToDegree, Degree},
+    type_cast::convertto_string,
 };
 use rand::{thread_rng, Rng};
 
@@ -258,14 +262,8 @@ pub fn resolve_limit(
             (predicted_count.len() as f32 * percentage).ceil(),
         );
     } else {
-        required_count.insert(
-            "Actual".to_string(),
-            actual_count.len() as f32
-        );
-        required_count.insert(
-            "Predicted".to_string(),
-            predicted_count.len() as f32
-        );
+        required_count.insert("Actual".to_string(), actual_count.len() as f32);
+        required_count.insert("Predicted".to_string(), predicted_count.len() as f32);
     }
 
     required_count.insert(
@@ -338,20 +336,18 @@ pub fn resolve_limit(
                     actual[i] = RDataType::String(a);
                 } else if predict[i].get_degree() == limit {
                     if auto == true {
-                    let new_deg =  a.tand_1(&predict[i]);
-                    predict[i].set_degree(new_deg);
-                    }
-                    else if predicted_count.contains(&(i as i32)) {
+                        let new_deg = a.tand_1(&predict[i]);
+                        predict[i].set_degree(new_deg);
+                    } else if predicted_count.contains(&(i as i32)) {
                         predict[i].set_degree(deg.clone());
                     } else {
                         predict[i].set_degree(deg2.clone());
                     }
                 } else if a.get_degree() == limit {
                     if auto == true {
-                        let new_deg =  predict[i].tand_1(&a);
+                        let new_deg = predict[i].tand_1(&a);
                         a.set_degree(new_deg);
-                        }
-                    else if actual_count.contains(&(i as i32)) {
+                    } else if actual_count.contains(&(i as i32)) {
                         a.set_degree(deg.clone());
                     } else {
                         a.set_degree(deg2.clone());
@@ -400,7 +396,7 @@ pub fn calculate_precision(cm: Vec<Vec<i32>>) -> f32 {
         }
     }
     let mut denominator = numerator;
-    for (i,r) in cm.iter().enumerate() {
+    for (i, r) in cm.iter().enumerate() {
         if i == 0 {
             continue;
         }
@@ -423,10 +419,10 @@ pub fn calculate_recall(cm: Vec<Vec<i32>>) -> f32 {
             break;
         }
     }
-    let mut denominator =  numerator;
+    let mut denominator = numerator;
     let row = &cm[0];
 
-    for (i,r) in row.iter().enumerate() {
+    for (i, r) in row.iter().enumerate() {
         if i == 0 {
             continue;
         }
@@ -440,6 +436,76 @@ pub fn calculate_recall(cm: Vec<Vec<i32>>) -> f32 {
     r
 }
 
+
+pub fn calculate_semi_triadic_accuracy(cm: Vec<Vec<i32>>) -> f32 {
+    let mut denominator = 0.0;
+    let mut numerator = 0 as f32;
+
+    for (i, r) in cm.iter().enumerate() {
+        for (j, c) in r.iter().enumerate() {
+            if i == j {
+                denominator += *c as f32;
+                numerator += *c as f32;
+            }
+        }
+    }
+
+    denominator += cm[0][3] as f32;
+    denominator += cm[3][0] as f32;
+    denominator += cm[4][3] as f32;
+
+    let a = numerator / denominator;
+    if denominator == 0.0 {
+        return 0.0;
+    }
+    a
+}
+
+
+pub fn calculate_semi_triadic_precision(cm: Vec<Vec<i32>>) -> f32 {
+    let mut numerator = 0.0;
+    for (i, r) in cm.iter().enumerate() {
+        numerator += r[i] as f32;
+        if i > 3 {
+            break;
+        }
+    }
+    let mut denominator = numerator;
+    
+    denominator += cm[1][0] as f32;
+    denominator += cm[3][0] as f32;
+
+    let p = numerator / denominator;
+    if denominator == 0.0 {
+        return 0.0;
+    }
+    p
+}
+
+pub fn calculate_semi_triadic_recall(cm: Vec<Vec<i32>>) -> f32 {
+    let mut numerator = 0.0;
+    for (i, r) in cm.iter().enumerate() {
+        numerator += r[i] as f32;
+        if i > 3 {
+            break;
+        }
+    }
+    let mut denominator = numerator;
+
+    denominator += cm[0][3] as f32;
+    denominator += cm[4][3] as f32;
+
+
+    let r = numerator / denominator;
+    if denominator == 0.0 {
+        return 0.0;
+    }
+    r
+}
+
+
+
+
 pub fn calculate_rate_of_learning(cm: Vec<Vec<i32>>) -> f32 {
     let mut denominator = 0.0;
     let mut numerator = 0.0;
@@ -447,9 +513,9 @@ pub fn calculate_rate_of_learning(cm: Vec<Vec<i32>>) -> f32 {
     for (i, r) in cm.iter().enumerate() {
         for (j, c) in r.iter().enumerate() {
             denominator += *c as f32;
-           if i != j {
-            numerator += *c as f32;
-           }
+            if i != j {
+                numerator += *c as f32;
+            }
         }
     }
 
@@ -457,7 +523,6 @@ pub fn calculate_rate_of_learning(cm: Vec<Vec<i32>>) -> f32 {
     numerator -= cm[1][0] as f32;
     numerator -= cm[3][0] as f32;
     numerator -= cm[4][3] as f32;
-
 
     let rol = numerator / denominator;
     if denominator == 0.0 {
