@@ -46,6 +46,16 @@ impl Ttable {
         self.data.len()
     }
 
+     pub fn get_value(&self, row_index: i32, col_name: TString) -> RDataType {
+        let index = row_index as usize;
+        if index < self.data.len(){
+            self.data[index].get_value(&col_name).unwrap()
+        }
+        else {
+            RDataType::Empty
+        }
+    }
+
     pub fn get_column_by_name(&self, name: &TString) -> Vec<RDataType> {
         let mut temp = Vec::<RDataType>::new();
         for r in self.data.iter() {
