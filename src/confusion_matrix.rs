@@ -204,6 +204,7 @@ pub fn resolve_limit(
     d: char,
     percentage: f32,
     auto: bool,
+    op_type: i32
 ) -> Result<(Vec<Vec<i32>>, HashMap<String, i32>, TArray<TString>), String> {
     if d.to_ascii_lowercase() != 't' && d.to_ascii_lowercase() != 'f' {
         return Err("Selected degree is not acceptable.".to_string());
@@ -336,7 +337,12 @@ pub fn resolve_limit(
                     actual[i] = RDataType::String(a);
                 } else if predict[i].get_degree() == limit {
                     if auto == true {
-                        let new_deg = a.tand_1(&predict[i]);
+                        let new_deg = match op_type {
+                            1 => a.tand_1(&predict[i]),
+                            2 => a.tand_2(&predict[i]),
+                            3 => a.tand_3(&predict[i]),
+                            _ => a.tand_1(&predict[i]),
+                        };
                         predict[i].set_degree(new_deg);
                     } else if predicted_count.contains(&(i as i32)) {
                         predict[i].set_degree(deg.clone());
@@ -345,7 +351,12 @@ pub fn resolve_limit(
                     }
                 } else if a.get_degree() == limit {
                     if auto == true {
-                        let new_deg = predict[i].tand_1(&a);
+                        let new_deg = match op_type {
+                            1 => predict[i].tand_1(&a),
+                            2 => predict[i].tand_2(&a),
+                            3 => predict[i].tand_3(&a),
+                            _ => predict[i].tand_1(&a),
+                        };
                         a.set_degree(new_deg);
                     } else if actual_count.contains(&(i as i32)) {
                         a.set_degree(deg.clone());
