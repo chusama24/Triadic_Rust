@@ -46,6 +46,26 @@ impl Ttable {
         self.data.len()
     }
 
+     pub fn get_value(&self, row_index: i32, col_name: TString) -> RDataType {
+        let index = row_index as usize;
+        if index < self.data.len(){
+            self.data[index].get_value(&col_name).unwrap()
+        }
+        else {
+            RDataType::Empty
+        }
+    }
+
+      pub fn swap_rows(&mut self, index1: i32, index2: i32) {
+        let i1 = index1 as usize;
+        let i2 = index2 as usize;
+        if i1 < self.data.len() && i2 < self.data.len() {
+            let temp = self.data[i1].clone();
+            self.data[i1] = self.data[i2].clone();
+            self.data[i2] = temp;
+        }
+    }
+
     pub fn get_column_by_name(&self, name: &TString) -> Vec<RDataType> {
         let mut temp = Vec::<RDataType>::new();
         for r in self.data.iter() {
