@@ -31,24 +31,26 @@ impl TriadicLogicalOp for TChar {
 
 // First Triadic AND operator (Z) declared as tand_1. Its rule is F > L > T
 
-    fn tand_1<B: Ttypes + Copy>(self, v2: B) -> Triadic {
-        let temp = self.get_degree();
-        let t_val = temp.get_value();
-// Match is just like a switch statement.
-        match t_val{
-            Degree::T => {
-                // If we do not put semi-colon at the end of the last statement, it will be considered
-                // the returning value .i.e. "return v2.get_degree();" === "v2.get_degree()"
+fn tand_1<B: Ttypes + Copy>(self, v2: B) -> Triadic {
+    let temp = self.get_degree();
+    let t_val = temp.get_value();
+    // Match is just like a switch statement.
+    match t_val {
+        Degree::T => {
+            // If we do not put semi-colon at the end of the last statement, it will be considered
+            // the returning value .i.e. "return v2.get_degree();" === "v2.get_degree()"
+            v2.get_degree()
+        }
+        Degree::L => {
+            if v2.get_degree().get_value() == Degree::F {
                 v2.get_degree()
-            },
-            Degree::L => {
-                self.get_degree()
-            },
-            Degree::F => {
+            } else {
                 self.get_degree()
             }
-        }
+        },
+        Degree::F => self.get_degree(),
     }
+}
 
     // Second Triadic AND operator (Omega) declared as tand_2. Its rule is L > F > T.
 
